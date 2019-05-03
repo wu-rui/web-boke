@@ -1,0 +1,71 @@
+.write-page {
+  height: 100%;
+  width: 100%;
+  .save {
+    position: absolute;
+    top: 85px;
+    right: 120px;
+  }
+  .submit {
+    position: absolute;
+    top: 85px;
+    right: 20px;
+  }
+  .write-sort {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 260px;
+    background-color: #444;
+    padding-top: 40px;
+    .ul-sort-name {
+      margin: 0;
+      padding: 0;
+      margin-top: 10px;
+      li {
+        font-weight: 600;
+        line-height: 40px;
+        list-style-type: none;
+        cursor: pointer;
+        color: gainsboro;
+        &:hover {
+          background-color: #1DA57A;
+          font-size: 16px;
+          color: #fff;
+        }
+      }
+      .sort-name {
+        background-color: #1DA57A;
+        font-size: 16px;
+        color: #fff;
+      }
+    }
+  }
+  .write-editor {
+    padding-left: 260px;
+    .write-title {
+      width: 100%;
+      height: 80px;
+      border: none;
+      outline: none;
+      font-size: 25px;
+      font-weight: bolder;
+      padding-left: 25px;
+    }
+    .editor-top {
+      height: 40px;
+      line-height: 30px;
+    }
+    .editor-content {
+      position: fixed;
+      right: 0;
+      left: 260px;
+      bottom: 0;
+      top: 120px;
+      min-height: 500px;
+      border: 1px solid #ccc;
+    }
+  }
+ 
+}

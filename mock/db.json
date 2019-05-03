@@ -1,0 +1,26 @@
+{
+  "demo": [
+    {
+      "id":1,
+      "title":"demo-a",
+      "content":"a-wurui"
+    },
+    {
+      "id":2,
+      "title":"demo-b",
+      "content":"b-wurui"
+    }
+  ],
+  "article": [
+    {
+      "id":3,
+      "title":"demo-c",
+      "content":"c-wurui"
+    },
+    {
+      "id":4,
+      "title":"demo-d",
+      "content":"d-wurui"
+    }
+  ]
+}

@@ -1,0 +1,114 @@
+// #HeadNav{
+//   height: 50px;
+//   background: #444;
+//   color: #fff;
+//   .nav-wrap{
+//     width:1200px;
+//     margin:0 auto;
+//     height:50px;
+//     box-sizing: border-box;
+//     .nav-logo-wrap{
+//       display: inline-block;
+//       font-size:26px;
+//       width: 26px;
+//       vertical-align: top;
+//       margin-left:12px;
+//       margin-top:4px;
+//     }
+//     .nav-list-wrap{
+//       width:1160px;
+//       display: inline-block;
+//       height:50px;
+//       text-align:right;
+//       .ant-menu{
+//         color: #fff;
+//         background: transparent;
+//         display: inline-block;
+//         height:50px;
+//       }
+//       .ant-menu-horizontal{
+//         border-color: transparent;
+//       }
+//       .ant-menu-horizontal .ant-menu-item, .ant-menu-horizontal .ant-menu-submenu{
+//         margin-top:0;
+//       }
+//       .ant-menu-horizontal{
+//         line-height:47px;
+//       }
+//     }
+//   }
+// }
+#HeadNav{
+  width: 100%;
+  min-width: 1200px;
+  color: darkgrey;
+  height: 68px;
+  .nav-wrap{
+    height: 68px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: #444;
+    .nav-title {
+      margin-left: 5px;
+      margin-right: 30px;
+    }
+    .wrap {
+      box-sizing: border-box;
+      width: 50%;
+      float: left;
+      -moz-box-sizing:border-box; /* Firefox */
+      -webkit-box-sizing:border-box; /* Safari */
+    }
+    .nav-logo-wrap {
+      margin-top: 10px;
+      color: aliceblue;
+      font-size: 30px;
+      .ant-input {
+        background-color: #444;
+        border: 1px solid #fff;
+        color: #d9d9d9;
+        .ant-input-search-icon {
+          color: #fff !important;
+        }
+        &:hover,&:focus{
+          border: 1px solid #fff;
+          box-shadow: none;
+          // 这里是去掉input的hover和focus的边框样式
+        }
+      } 
+    }
+    .nav-list-wrap {
+      position: relative;
+      margin-top: 13px;
+      .ant-menu-horizontal {
+        font-size: 16px;
+        line-height: 50px;
+        background-color: #444;
+        border: none;
+        .ant-menu-item {
+          a {
+            &:hover {
+              color: #ebebe3;
+            }
+          color: darkgrey;
+         }
+       }
+       .ant-menu-item-active,.ant-menu-item-selected {
+         border-bottom: 5px solid #ebebe3;
+         a {
+          color: #ebebe3;
+         }
+       }
+      }
+      .write-button {
+        position: absolute;
+        width: 80px;
+        height: 40px;
+        top: 30px;
+        right: 100px;
+      }
+    }
+  }
+}
