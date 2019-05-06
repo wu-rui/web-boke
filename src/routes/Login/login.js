@@ -1,26 +1,82 @@
 import React, { Component } from 'react';
+import { Icon } from 'antd';
+import { UserContext } from '../../context';
+import { Redirect } from 'react-router';
 import './login-enroll.less'
 
 export default class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: null,
+      password: null,
+    }
+  }
+  userInput = (e) => {
+    this.setState({
+
+      username: e.target.value,
+
+    })
+  }
+  pswInput = (e) => {
+    this.setState({
+      password: e.target.value,
+    })
+  }
+  onLogin = () => {
+    console.log(this);
+    let data = {};
+    let username = this.state.loginName;
+    let password = this.state.loginPsw;
+    if (username !== null && password == null) {
+      debugger
+      data.username = this.state.loginName;
+      data.password = this.state.loginPsw;
+      this.props.toggleTheme(data);
+    } else {
+      return false;
+    }
+  }
   render() {
     return (
-      <div className="login-page">
-        <div className="pic-box">
-          <img src="/image/login.jpg" className="list-img-banner" alt="登录页图片" />
-        </div>
-      </div>
-      // <div className="login-box">
-      //   <form className="for-login" name="input">
-      //     <div className="title">README</div>
-      //     <input type="text" placeholder="   会员名" height="100%" className="input" />
-      //     <input type="text" placeholder="   密码" height="100%" className="input" />
-      //     <button type="button" className="button">同意条款并注册</button>
-      //     <div className="other-way">
-      //       <span className="text">第三方账号登录</span>
-      //     </div>
-      //   </form>
-      // </div>
-      // </div >
+      <UserContext.Consumer>
+        {(states) => {
+          if (states.isLogin) {
+            return (<Redirect to="/" />);
+          } else {
+            return (
+              <div className="login-page">
+
+                <div className="top-line">
+                  <label className="page-title">README</label>
+                </div>
+
+                <div className="login-box">
+
+                  <div className="login-method">
+                    <span className="method-text" style={{ float: 'left' }}>密码登录</span>
+                    <span className="checkout-method" >注册</span>
+                  </div>
+
+                  <div className="input-line" >
+                    <Icon type="user" className="login-icon" />
+                    <input type="text" placeholder="用户名/手机/邮箱" className="login-input" onInput={this.userInput} />
+                  </div>
+
+                  <div className="input-line" >
+                    <Icon type="key" className="login-icon" />
+                    <input type="text" placeholder="请输入登录密码" className="login-input" onInput={this.pswInput} />
+                  </div>
+
+                  <button type="button" className="login-button" onClick={() => { states.toggleTheme(this.state.username, this.state.password) }}>登录</button>
+                </div>
+              </div>
+            )
+          }
+        }
+        }
+      </UserContext.Consumer>
     )
   }
 }

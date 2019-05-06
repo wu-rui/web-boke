@@ -17,29 +17,40 @@ import './App.css';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.updateContext = (data) => {
-      this.getResult(data)
-    }
     this.state = {
+      isLogin: false,
       context: UserContext.contect,
-      toggleTheme: this.toggleTheme,
+      toggleTheme: this.updateContext,
     }
   }
   componentDidMount() {
-    // this.getLocalStorageUserMsg();
+    this.getLocalStorageUserMsg();
   }
 
   /*这里需要注意后期优化在safari的private模式下
   * localS torage会返回null，导致程序错误
   */
+
+  updateContext = (username, password) => {
+    let data = {}
+    if (username !== null && password !== null) {
+      data.username = username;
+      data.password = password;
+      debugger
+      this.getResult(data);
+    } else {
+      alert("用户名和密码不能为空，请填写后尝试");
+    }
+  }
+
   getLocalStorageUserMsg() {
     let userMsg = localStorage.user_msg;
     if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
+      debugger
       this.setState({
-        context: userMsg,
+        context: JSON.parse(userMsg),
+        isLogin: true
       })
-    } else {
-      alert("不好意思，登录失败");
     }
   }
 
@@ -54,6 +65,7 @@ class App extends Component {
   }
 
   render() {
+    console.log('app', this.state)
     return (
       <div className="App">
         <UserContext.Provider value={this.state}>

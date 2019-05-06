@@ -65,7 +65,7 @@ export default class Center extends Component {
   }
 
   setMenuContent = (id, result) => {
-
+    debugger
     switch (id) {
       case 1: return (
         <Solution />
@@ -90,18 +90,24 @@ export default class Center extends Component {
   render() {
     return (
       <UserContext.Consumer>
-        {(states) => (
-          <div id="center-content">
-            <div className="left-menu">
-              <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
+        {(states) => {
+          console.log('center', states);
+          return (
+            <div id="center-content">
+              <div className="left-menu">
+                <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
+              </div>
+              <div className="center-user">
+                {
+                  this.setMenuContent(this.state.menuId, states.context)
+                }
+              </div>
             </div>
-            <div className="center-user">
-              {
-                this.setMenuContent(this.state.menuId, states.context)
-              }
-            </div>
-          </div>
-        )}
+          )
+        }
+
+
+        }
       </UserContext.Consumer>
     )
   }
