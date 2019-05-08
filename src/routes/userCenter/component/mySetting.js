@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-
+const name = '修改密码，';
 export default class Setting extends Component {
+
 
   render() {
     console.log('setting:', this.props.userMsg)

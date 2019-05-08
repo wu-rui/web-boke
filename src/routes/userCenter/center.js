@@ -38,6 +38,8 @@ const list = [
   },
 ]
 
+const hash = window.location.hash;
+
 export default class Center extends Component {
 
   constructor(props) {
@@ -45,6 +47,15 @@ export default class Center extends Component {
     console.log('props', props)
     this.state = {
       menuId: 1,
+    }
+  }
+
+
+  componentDidMount() {
+    if (hash === '#2') {
+      this.setState({
+        menuId: 2,
+      })
     }
   }
 
@@ -65,7 +76,6 @@ export default class Center extends Component {
   }
 
   setMenuContent = (id, result) => {
-    debugger
     switch (id) {
       case 1: return (
         <Solution />
@@ -104,10 +114,7 @@ export default class Center extends Component {
               </div>
             </div>
           )
-        }
-
-
-        }
+        }}
       </UserContext.Consumer>
     )
   }

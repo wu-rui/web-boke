@@ -30,7 +30,6 @@ export default class Login extends Component {
     let username = this.state.loginName;
     let password = this.state.loginPsw;
     if (username !== null && password == null) {
-      debugger
       data.username = this.state.loginName;
       data.password = this.state.loginPsw;
       this.props.toggleTheme(data);

@@ -12,7 +12,7 @@ export default function connection(param) {
     data: data,
   })
     .then(function (response) {
-      return response.data.data;
+      return response;
     })
     .catch(function (error) {
       console.log(error);

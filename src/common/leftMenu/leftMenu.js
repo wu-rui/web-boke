@@ -8,12 +8,12 @@ export default class HeadNav extends Component {
 		console.log('fx', props.selectNode)
 	}
 
-	mapList = (list) => {
+	mapList = (list,selectId) => {
 		return (
 			<ul className="ul-list-name">
 				{
 					list.map((item) => {
-						if (item.id === 1) {
+						if (item.id === selectId) {
 							return (
 								<div className="menu-line active" key={item.type} onClick={this.props.selectNode} value={item.id}>
 									<Icon type={item.type} className="menu-icon" />
@@ -37,7 +37,7 @@ export default class HeadNav extends Component {
 	render() {
 		return (
 			<div id="menu">
-				{this.mapList(this.props.data)}
+				{this.mapList(this.props.data,this.props.selectId)}
 			</div>
 		)
 	}

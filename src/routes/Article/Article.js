@@ -1,27 +1,35 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+// import { Redirect, withRouter } from 'react-router';
+import { withRouter, Link } from 'react-router-dom';
+// import { BrowserRouter, Link } from 'react-router-dom'
+// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 import { Modal, Button, Input } from 'antd';
 import connection from '../../server';
 
 import E from 'wangeditor'
 import './article.less'
 
-export default class Article extends Component {
+
+class Article extends Component {
   constructor(props, context) {
     super(props, context);
     console.log('这里的props', props.userMsg)
     this.state = {
-      editorContent: '',
-      sortId: '',
-      menuList: [],
+      editorContent: null,
+      sortId: null,
+      menuList: null,
       userId: null,
       visible: false,
       confirmLoading: false,
       newSortName: null,
       title: null,
+      result: null,
+      isSubmit: false,
     }
   }
   componentDidMount() {
+    // console.log('BrowserRouter',BrowserRouter)
     const editor = new E(this.editorElemTop, this.editorElemContnet)
     // 设置为100是因为这个页面有弹窗，而其便器的默认值是10000，需要改变其值大小
     editor.customConfig.zIndex = 100
@@ -34,16 +42,18 @@ export default class Article extends Component {
     editor.create();
     console.log('localStorage', localStorage.user_msg);
   }
+
   componentWillReceiveProps(nextProps) {
     console.log('componentWillReceiveProps', nextProps)
     this.setState({
       userId: nextProps.userMsg.id
     }, () => {
-      this.getUserResult();
+      this.getUserResult()
     })
 
   }
 
+  // 获取用户分类接口
   async getUserResult() {
     const param = {
       data: null,
@@ -51,20 +61,77 @@ export default class Article extends Component {
       method: 2
     }
     this.setState({
-      menuList: await connection(param)
+      menuList: await connection(param),
     })
   }
 
-  clickHandle() {
+  // 保存文章接口
+  async saveArticle(data) {
+    const param = {
+      data: data,
+      path: '/article',
+      method: 1
+    }
+    this.setState({
+      result: await connection(param)
+    }, () => {
+      if (this.state.result.data.code === 1) {
+        this.props.history.push('/center#2')
+      }
+    })
+  }
+
+  // 点击保存，直接发布
+  clickSave = (e) => {
+    let res = (e.target.id === 'save') ? 1 : 2;
+    let result = true;
+    let data = {
+      title: this.state.title,
+      userId: this.props.userMsg.id,
+      categoryId: this.state.sortId,
+      articleStatus: res,
+      content: this.state.editorContent
+    }
+    for (var i in data) {
+      if (result && (data[i] === null || data[i] === undefined || data[i] === '')) {
+        result = false;
+        switch (i) {
+          case 'title':
+            alert('标题不能为空');
+            break;
+          case 'content':
+            alert('内容不能为空');
+            break;
+          case 'categoryId':
+            alert('请选择分类');
+            break;
+          default:
+            break;
+        }
+      } else {
+        if (i === 'content' && data[i] === '<p><br></p>') {
+          result = false;
+        }
+      }
+    }
+    if (result) {
+      this.saveArticle(data)
+    }
+  }
+
+
+  // 点击直接发布
+  clickSubmit = () => {
     alert(this.state.editorContent)
   }
 
+  // 遍历显示用户的分类
   mapArticelSort = (menuList) => {
-    if (menuList) {
+    if (menuList !== undefined && menuList !== null) {
       return (
         <ul className="ul-sort-name">
           {
-            menuList.map((item) => {
+            menuList.data.data.map((item) => {
               return (
                 <li key={item.id} value={item.id} onClick={this.selectSort}>{item.name}</li>
               )
@@ -75,6 +142,7 @@ export default class Article extends Component {
     }
   }
 
+  // 获取用户选择的分类
   selectSort = (e) => {
     let selectSort = e.target;
     let id = selectSort.value;
@@ -88,13 +156,14 @@ export default class Article extends Component {
     })
   }
 
+  // 点击显示弹窗
   showModal = () => {
     this.setState({
       visible: true,
-      newSortName: null,
     });
   }
 
+  // 确认新增分类
   handleOk = () => {
     const data = {
       name: this.state.newSortName,
@@ -104,14 +173,16 @@ export default class Article extends Component {
     this.setState({
       confirmLoading: true,
     });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
+    this.setState({
+      visible: false,
+      confirmLoading: false,
+      newSortName: null,
+    }, () => {
+      document.getElementById("sortName").value = '';
+    });
   }
 
+  // 新增文章分类接口
   async outNewSortName(data) {
     const param = {
       data: data,
@@ -119,21 +190,26 @@ export default class Article extends Component {
       method: 1
     }
     await connection(param).then(() => {
-      this.getUserResult();
+      this.getUserResult()
     })
   }
 
+  // 弹窗取消分类
   handleCancel = () => {
     this.setState({
       visible: false,
     });
   }
+
+  // 实时获取用户输入的分类名称
   onSortNameChange = (e) => {
     this.setState({
       newSortName: e.target.value,
     })
     console.log(e.target.value);
   };
+
+  // 实时获取用户输入的标题内容
   onTitleChange = (e) => {
     this.setState({
       title: e.target.value,
@@ -144,8 +220,8 @@ export default class Article extends Component {
   render() {
     return (
       <div className="write-page">
-        <Button type="primary" onClick={this.clickHandle.bind(this)} className="save">保存</Button>
-        <Button type="primary" onClick={this.clickHandle.bind(this)} className="submit">直接发布</Button>
+        <Button type="primary" onClick={this.clickSave} className="save" id="save">保存</Button>
+        <Button type="primary" onClick={this.clickSave} className="submit" id="submit">直接发布</Button>
         <div className="write-sort">
           <Button type="primary" className="go-home">
             <Link to="/">返回首页</Link>
@@ -161,7 +237,7 @@ export default class Article extends Component {
             confirmLoading={this.state.confirmLoading}
             onCancel={this.handleCancel}
           >
-            <Input placeholder="请输入分类名称" allowClear onChange={this.onSortNameChange} />
+            <Input id="sortName" placeholder="请输入分类名称" allowClear onChange={this.onSortNameChange} />
           </Modal>
         </div>
         {/* 将生成编辑器 */}
@@ -176,3 +252,5 @@ export default class Article extends Component {
     );
   }
 }
+
+export default withRouter(Article);

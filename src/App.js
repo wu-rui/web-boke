@@ -36,7 +36,6 @@ class App extends Component {
     if (username !== null && password !== null) {
       data.username = username;
       data.password = password;
-      debugger
       this.getResult(data);
     } else {
       alert("用户名和密码不能为空，请填写后尝试");
@@ -44,13 +43,16 @@ class App extends Component {
   }
 
   getLocalStorageUserMsg() {
-    let userMsg = localStorage.user_msg;
-    if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
-      debugger
-      this.setState({
-        context: JSON.parse(userMsg),
-        isLogin: true
-      })
+    if (localStorage.user_msg) {
+      let userMsg = localStorage.user_msg;
+      if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
+        this.setState({
+          context: JSON.parse(userMsg).data.data,
+          isLogin: true
+        }, () => {
+          console.log('gengxinchengglm ', this.state.context)
+        })
+      }
     }
   }
 
