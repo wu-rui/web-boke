@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-// import axios from 'axios';
-import HotList from '../../components/hotList/hotList'
-import articles from '../../mockData/data'
+import HotList from '../../components/hotList/hotList';
+import articles from '../../mockData/data';
 import ArticleList from '../../components/articleList/articleList';
+import connection from '../../server';
 import './home.less'
 
 export default class Home extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      articles: null,
+    }
+  }
 
   /*这里需要注意后期优化在safari的private模式下
   * localS torage会返回null，导致程序错误
@@ -22,6 +29,25 @@ export default class Home extends Component {
         context: "暂时没有数据",
       })
     }
+  }
+
+  componentDidMount() {
+    this.getArticles();
+  }
+
+  async getArticles() {
+    const param = {
+      data: null,
+      path: '/article/new_article',
+      method: 1
+    }
+    this.setState({
+      articles: await connection(param),
+    }, () => {
+      console.log('this.state.articles', this.state.articles)
+    })
+    // localStorage.setItem('user_msg', JSON.stringify(await connection(param)));
+    // this.getLocalStorageUserMsg();
   }
 
   render() {

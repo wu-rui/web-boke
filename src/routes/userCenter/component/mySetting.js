@@ -1,7 +1,14 @@
 import React, { Component } from 'react';
-const name = '修改密码，';
+// const name = '修改密码，';
 export default class Setting extends Component {
 
+  constructor(props) {
+    super(props);
+    console.log('props', props)
+    this.state = {
+      menuId: 1,
+    }
+  }
 
   render() {
     console.log('setting:', this.props.userMsg)

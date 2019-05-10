@@ -13,9 +13,15 @@
     height: 50px;
     border-bottom: 0.5px solid darkgray;
     .page-title {
+      text-shadow: 1px 1px 0 red,
+      2px 2px 0 red,
+      3px 3px 0 red,
+      4px 4px 0 red,
+      5px 5px 0 red,
+      6px 6px 0 red;
       line-height: 50px;
       float: left;
-      font-size: 30px;
+      font-size: 60px;
       margin-left: 100px;
       color: #fff;
       font-weight: 600;
@@ -23,7 +29,7 @@
   }
   .login-box {
     width: 380px;
-    height: 360px;
+    min-height: 360px;
     position: fixed;
     top: 20%;
     left: 15%;
@@ -36,10 +42,8 @@
       .checkout-method {
         float: right;
         cursor: pointer;
-        &:hover {
-          color: #1d5464;
-          font-size: 20px;
-        }
+        color: #125B71;
+        font-size: 15px;
        }
       }
     .input-line {
@@ -60,7 +64,19 @@
         border: 1px solid darkgray;
         outline-color: #1d5464;
         color: #1d5464;
+        border-radius: 2px;
       }
+      .get-check {
+        position: absolute;
+        right: 60px;
+        top: 8px;
+        color: #125B71;
+        cursor: pointer;
+        font-size: 13px;
+      }
+    }
+    .input-hidden {
+      display: none;
     }
     .login-button {
       width: 300px;
@@ -71,6 +87,7 @@
       color: #fff;
       font-size: 15px;
       outline: none;
+      margin-bottom: 45px;
     }
   }
 }

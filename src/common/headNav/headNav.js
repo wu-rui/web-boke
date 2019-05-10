@@ -40,12 +40,12 @@ export default class HeadNav extends Component {
 							<Menu.Item key="writePage">
 								<Link to="/write" target="_blank">写文章</Link>
 							</Menu.Item>
-							<Menu.Item key="login">
+							{/* <Menu.Item key="login">
 								<Link to="/login">登录</Link>
 							</Menu.Item>
 							<Menu.Item key="enroll" >
 								<Link to="/enroll">注册</Link>
-							</Menu.Item>
+							</Menu.Item> */}
 							<Menu.Item key="center" >
 								<Link to="/center">个人中心</Link>
 							</Menu.Item>

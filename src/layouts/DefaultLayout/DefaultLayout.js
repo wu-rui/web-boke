@@ -3,8 +3,6 @@ import { Route } from 'react-router-dom';
 import HeadNav from '../../common/headNav/headNav';
 import Footer from '../../common/footer/footer';
 import Home from '../../routes/Home/Home';
-import login from '../../routes/Login/login';
-import enroll from '../../routes/Login/enroll';
 import center from '../../routes/userCenter/center';
 
 import './DefaultLayout.less'

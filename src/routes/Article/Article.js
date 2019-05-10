@@ -159,8 +159,12 @@ class Article extends Component {
   // 点击显示弹窗
   showModal = () => {
     this.setState({
-      visible: true,
-    });
+      newSortName: '',
+    }, () => {
+      this.setState({
+        visible: true,
+      });
+    })
   }
 
   // 确认新增分类
@@ -176,9 +180,6 @@ class Article extends Component {
     this.setState({
       visible: false,
       confirmLoading: false,
-      newSortName: null,
-    }, () => {
-      document.getElementById("sortName").value = '';
     });
   }
 
@@ -237,7 +238,7 @@ class Article extends Component {
             confirmLoading={this.state.confirmLoading}
             onCancel={this.handleCancel}
           >
-            <Input id="sortName" placeholder="请输入分类名称" allowClear onChange={this.onSortNameChange} />
+            <Input id="sortName" allowClear onChange={this.onSortNameChange} placeholder="请输入分类名称" value={this.state.newSortName} />
           </Modal>
         </div>
         {/* 将生成编辑器 */}
