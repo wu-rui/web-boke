@@ -16,7 +16,7 @@ export default class ArticleList extends Component {
         <li className="info-li" key={item.id}>
           <div className="info-li-info">
             <p className="info-title">
-              <a className="info-title" href="https://juejin.im/" target="_blank">
+              <a href="https://juejin.im/" target="_blank">
                 {item.title}
               </a>
             </p>

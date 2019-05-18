@@ -15,14 +15,16 @@
       float: left;
       text-align: left;
       .info-title {
-        color: #323232;
-        font-size: 26px;
         padding-top: 20px;
         font-weight: 500;
         cursor: pointer;
-        &:hover {
-          font-size: 26.3px;
-          color: #000000;
+        a {
+          color: #323232;
+          font-size: 26px;
+          &:hover {
+            border-bottom: 1px solid;
+            color: #000000;
+          }
         }
       }
       .info-content {
@@ -56,11 +58,9 @@
           }
           &:hover {
             .remark-icon {
-              width: 25px;
-              font-size: 18px;
               color: #000000;
             }
-            font-weight: 700;
+            color: #000000;
             cursor: pointer;
           }
         }

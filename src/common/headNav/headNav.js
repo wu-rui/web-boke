@@ -40,12 +40,6 @@ export default class HeadNav extends Component {
 							<Menu.Item key="writePage">
 								<Link to="/write" target="_blank">写文章</Link>
 							</Menu.Item>
-							{/* <Menu.Item key="login">
-								<Link to="/login">登录</Link>
-							</Menu.Item>
-							<Menu.Item key="enroll" >
-								<Link to="/enroll">注册</Link>
-							</Menu.Item> */}
 							<Menu.Item key="center" >
 								<Link to="/center">个人中心</Link>
 							</Menu.Item>
@@ -56,21 +50,3 @@ export default class HeadNav extends Component {
 		)
 	}
 }
-
-
-{/* <div className="header">
-					<div className="header-block">
-						<a className="header-name">简记</a>
-						<a className="header-home">首页</a>
-						<div className="header-search">
-							<div className="input-group">
-								<input type="text" className="form-control" placeholder="搜索" />
-								<span className="input-group-btn">
-									<button className="btn btn-default" type="button">Go!</button>
-								</span>
-							</div>
-						</div>
-						<a className="header-home login btn btn-default  btn-sm" href="login.html">登录</a>
-						<a className="header-home enroll btn btn-default btn-sm" href="enroll.html">注册</a>
-					</div>
-				</div> */}

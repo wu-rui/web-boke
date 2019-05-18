@@ -10,9 +10,12 @@
     "less-loader": "^4.1.0",
     "react": "^16.8.6",
     "react-app-rewired": "^2.1.1",
+    "react-core-image-upload": "^2.2.3",
     "react-dom": "^16.8.6",
+    "react-dropzone": "^10.1.4",
     "react-router-dom": "^5.0.0",
     "react-scripts": "^2.1.8",
+    "superagent": "^5.0.5",
     "wangeditor": "^3.1.1"
   },
   "scripts": {
@@ -32,6 +35,7 @@
   ],
   "proxy": "http://47.97.125.71:8080",
   "devDependencies": {
-    "axios": "^0.18.0"
+    "axios": "^0.18.0",
+    "react-cropper": "^1.2.0"
   }
 }
