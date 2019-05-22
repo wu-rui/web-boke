@@ -1,20 +1,13 @@
 import React, { Component } from 'react';
-// import { Redirect, withRouter } from 'react-router';
 import { withRouter, Link } from 'react-router-dom';
-// import { BrowserRouter, Link } from 'react-router-dom'
-// import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
 import { Modal, Button, Input } from 'antd';
 import connection from '../../server';
-
 import E from 'wangeditor'
 import './article.less'
-
 
 class Article extends Component {
   constructor(props, context) {
     super(props, context);
-    console.log('这里的props', props.userMsg)
     this.state = {
       editorContent: null,
       sortId: null,
@@ -29,7 +22,6 @@ class Article extends Component {
     }
   }
   componentDidMount() {
-    // console.log('BrowserRouter',BrowserRouter)
     const editor = new E(this.editorElemTop, this.editorElemContnet)
     // 设置为100是因为这个页面有弹窗，而其便器的默认值是10000，需要改变其值大小
     editor.customConfig.zIndex = 100
@@ -40,11 +32,9 @@ class Article extends Component {
       })
     }
     editor.create();
-    console.log('localStorage', localStorage.user_msg);
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('componentWillReceiveProps', nextProps)
     this.setState({
       userId: nextProps.userMsg.id
     }, () => {
@@ -76,8 +66,9 @@ class Article extends Component {
       result: await connection(param)
     }, () => {
       if (this.state.result.data.code === 1) {
-        this.props.history.push('/center#2')
+        this.props.history.push('/center?id=2');
       }
+      // window.location.href = `http://47.97.125.71:8080/article/detail/${this.state.result.data.changeData.id}`;
     })
   }
 
@@ -128,17 +119,25 @@ class Article extends Component {
   // 遍历显示用户的分类
   mapArticelSort = (menuList) => {
     if (menuList !== undefined && menuList !== null) {
-      return (
-        <ul className="ul-sort-name">
-          {
-            menuList.data.data.map((item) => {
-              return (
-                <li key={item.id} value={item.id} onClick={this.selectSort}>{item.name}</li>
-              )
-            })
-          }
-        </ul>
-      )
+      if (menuList.data.data.length > 0) {
+        return (
+          <div>
+            <Button type="primary" className="go-home">
+              <Link to="/">返回首页</Link>
+            </Button>
+            <ul className="ul-sort-name">
+              {
+                menuList.data.data.map((item) => {
+                  return (
+                    <li key={item.id} value={item.id} onClick={this.selectSort}>{item.name}</li>
+                  )
+                })
+              }
+            </ul>
+            <Button onClick={this.showModal} type="primary" className="go-home" style={{ marginTop: 10 }}>新建分类</Button>
+          </div>
+        )
+      }
     }
   }
 
@@ -207,7 +206,6 @@ class Article extends Component {
     this.setState({
       newSortName: e.target.value,
     })
-    console.log(e.target.value);
   };
 
   // 实时获取用户输入的标题内容
@@ -215,7 +213,6 @@ class Article extends Component {
     this.setState({
       title: e.target.value,
     })
-    console.log(e.target.value);
   };
 
   render() {
@@ -224,13 +221,9 @@ class Article extends Component {
         <Button type="primary" onClick={this.clickSave} className="save" id="save">保存</Button>
         <Button type="primary" onClick={this.clickSave} className="submit" id="submit">直接发布</Button>
         <div className="write-sort">
-          <Button type="primary" className="go-home">
-            <Link to="/">返回首页</Link>
-          </Button>
           {
             this.mapArticelSort(this.state.menuList)
           }
-          <Button onClick={this.showModal} type="primary" className="go-home" style={{ marginTop: 10 }}>新建分类</Button>
           <Modal
             title="Title"
             visible={this.state.visible}

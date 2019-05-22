@@ -3,15 +3,14 @@ import React, { Component } from 'react';
 import ArticleList from '../../../components/articleList/articleList';
 
 export default class MyArticle extends Component {
-  constructor(props) {
-    super(props);
-    console.log(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render() {
     return (
       <div>
-        <ArticleList data={this.props.data} />
+        {/* <ArticleList data={this.props.data} /> */}
       </div>
     )
   }

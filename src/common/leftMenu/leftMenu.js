@@ -3,12 +3,11 @@ import { Icon } from 'antd';
 import './leftMenu.less';
 
 export default class HeadNav extends Component {
-	constructor(props) {
-		super(props);
-		console.log('fx', props.selectNode)
-	}
+	// constructor(props) {
+	// 	super(props);
+	// }
 
-	mapList = (list,selectId) => {
+	mapList = (list, selectId) => {
 		return (
 			<ul className="ul-list-name">
 				{
@@ -37,7 +36,7 @@ export default class HeadNav extends Component {
 	render() {
 		return (
 			<div id="menu">
-				{this.mapList(this.props.data,this.props.selectId)}
+				{this.mapList(this.props.data, this.props.selectId)}
 			</div>
 		)
 	}

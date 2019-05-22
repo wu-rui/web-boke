@@ -61,8 +61,6 @@ export default class Solution extends Component {
         ...this.state.data,
         [name]: e.target.value,
       }
-    }, () => {
-      console.log(this.state)
     })
   };
 
@@ -81,14 +79,14 @@ export default class Solution extends Component {
   changeImg = (isChangeImg) => {
     if (isChangeImg) {
       return (
-        <div>
+        <div className="update-button">
           <button onClick={this.changeImgs}>确定更换</button>
           <button onClick={this.cancleChangeImg}>取消更换</button>
         </div>
       )
     } else {
       return (
-        <label htmlFor="fileElem">更换头像</label>
+        <label htmlFor="fileElem" className="update-img">更换头像</label>
       )
     }
   }

@@ -6,7 +6,6 @@ import { UserContext } from '../../context';
 import './WritePage.less'
 export default class WritePage extends Component {
   render() {
-    console.log('文章布局里面', UserContext.context)
     return (
       <UserContext.Consumer>
         {(states) => (

@@ -43,14 +43,12 @@ class App extends Component {
   }
 
   getLocalStorageUserMsg() {
-    if (localStorage.user_msg) {
+    if (localStorage.user_msg !== 'undefined') {
       let userMsg = localStorage.user_msg;
       if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
         this.setState({
           context: JSON.parse(userMsg).data.data,
           isLogin: true
-        }, () => {
-          console.log('gengxinchengglm ', this.state.context)
         })
       }
     }
@@ -67,7 +65,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('app', this.state)
     return (
       <div className="App">
         <UserContext.Provider value={this.state}>

@@ -38,21 +38,19 @@ const list = [
   },
 ]
 
-const hash = window.location.hash;
+// const search = window.location.search;
 
 export default class Center extends Component {
 
   constructor(props) {
     super(props);
-    console.log('props', props)
     this.state = {
       menuId: 1,
     }
   }
 
-
   componentDidMount() {
-    if (hash === '#2') {
+    if (window.location.search === '?id=2') {
       this.setState({
         menuId: 2,
       })
@@ -70,8 +68,6 @@ export default class Center extends Component {
     selectList.classList.add('active');
     this.setState({
       menuId: id,
-    }, () => {
-      console.log('点击后的id为', this.state.menuId)
     })
   }
 
@@ -101,7 +97,6 @@ export default class Center extends Component {
     return (
       <UserContext.Consumer>
         {(states) => {
-          console.log('center', states);
           return (
             <div id="center-content">
               <div className="left-menu">

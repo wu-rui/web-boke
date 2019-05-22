@@ -4,25 +4,29 @@ import HeadNav from '../../common/headNav/headNav';
 import Footer from '../../common/footer/footer';
 import Home from '../../routes/Home/Home';
 import center from '../../routes/userCenter/center';
+import { UserContext } from '../../context';
+
 
 import './DefaultLayout.less'
 export default class DefaultLayout extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userMsg: this.props.userMsg
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   console.log('props', props)
+  // }
   render() {
     return (
-      <div id="DefaultLayout">
-        <HeadNav match={this.props.match} location={this.props.location} history={this.props.history} />
-        <div className="content-wrap">
-          <Route path="/" component={Home} exact />
-          <Route path="/center" component={center} />
-        </div>
-        <Footer />
-      </div >
+      <UserContext.Consumer>
+        {(result) => (
+          <div id="DefaultLayout">
+            <HeadNav match={this.props.match} location={this.props.location} history={this.props.history} user={result} />
+            <div className="content-wrap">
+              <Route path="/" component={Home} exact />
+              <Route path="/center" component={center} />
+            </div>
+            <Footer />
+          </div >
+        )}
+      </UserContext.Consumer>
     );
   }
 }

@@ -21,7 +21,6 @@ export default class Login extends Component {
 
   // 当点击登录，判断数据是否正确
   onLogin = () => {
-    console.log(this);
     let data = {};
     let username = this.state.loginName;
     let password = this.state.loginPsw;
@@ -37,7 +36,6 @@ export default class Login extends Component {
   // 当input框开始改变
   handleInputChange = (e) => {
     const name = e.target.name;
-    debugger
     if (name === 'enrollTel' && e.target.value.length === 11) {
       this.setState({
         isHidden: '',
@@ -53,8 +51,6 @@ export default class Login extends Component {
     }
     this.setState({
       [name]: e.target.value,
-    }, () => {
-      console.log(this.state)
     })
   }
 

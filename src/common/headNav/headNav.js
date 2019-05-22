@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Input } from 'antd'
-import './headNav.less'
-import { Link } from 'react-router-dom'
+import './headNav.less';
+import { Link } from 'react-router-dom';
 const Search = Input.Search;
+
 export default class HeadNav extends Component {
 	constructor(props) {
 		super(props);
@@ -10,11 +11,22 @@ export default class HeadNav extends Component {
 		var currentName = location[location.length - 1] ? location[location.length - 1] : 'home';
 		this.state = {
 			current: currentName,
+			userName: null,
 		}
 	}
 	handleClick = (e) => { //点击事件
 		this.setState({ current: e.key });
 	}
+
+	componentDidMount() {
+		if (this.props.user.isLogin) {
+			debugger
+			this.setState({
+				username: this.props.user.context.username,
+			})
+		}
+	}
+
 	render() {
 		return (
 			<div id="HeadNav">
@@ -43,10 +55,12 @@ export default class HeadNav extends Component {
 							<Menu.Item key="center" >
 								<Link to="/center">个人中心</Link>
 							</Menu.Item>
+							<label className="user-name">hello，{this.state.username}</label>
 						</Menu>
 					</div>
 				</div>
 			</div>
+
 		)
 	}
 }
