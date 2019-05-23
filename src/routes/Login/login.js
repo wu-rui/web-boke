@@ -33,6 +33,8 @@ export default class Login extends Component {
     }
   }
 
+
+
   // 当input框开始改变
   handleInputChange = (e) => {
     const name = e.target.name;
@@ -58,6 +60,7 @@ export default class Login extends Component {
   showPage = (states) => {
     if (this.state.isLogin) {
       return (
+        // 登录框
         <div className="login-box">
           <div className="login-method">
             <span className="method-text" style={{ float: 'left' }}>密码登录</span>
@@ -71,11 +74,12 @@ export default class Login extends Component {
             <Icon type="key" className="login-icon" />
             <input name="password" type="text" placeholder="请输入登录密码" className="login-input" onChange={this.handleInputChange} value={this.state.password} />
           </div>
-          <button type="button" className="login-button" onClick={() => { states.toggleTheme(this.state.username, this.state.password) }}>登录</button>
+          <button type="button" className="login-button" onClick={() => { states.toggleTheme(this.state.username, this.state.password,1) }}>登录</button>
         </div>
       )
     } else {
       return (
+        // 注册框
         <div className="login-box">
           <div className="login-method">
             <span className="method-text" style={{ float: 'left' }}>用户注册</span>
@@ -85,7 +89,7 @@ export default class Login extends Component {
             <Icon type="user" className="login-icon" />
             <input name="enrollName" type="text" autoFocus placeholder="请输入用户名" className="login-input" onChange={this.handleInputChange} value={this.state.enrollName} />
           </div>
-          <div className="input-line" >
+          {/* <div className="input-line" >
             <Icon type="phone" className="login-icon" />
             <input name="enrollTel" type="text" maxLength={11} placeholder="请输入手机号" className="login-input" onChange={this.handleInputChange} value={this.state.enrollTel} />
           </div>
@@ -93,21 +97,21 @@ export default class Login extends Component {
             <Icon type="message" className="login-icon" />
             <input name="enrollCheck" type="text" placeholder="请输入验证码" className="login-input" onChange={this.handleInputChange} value={this.state.enrollCheck} />
             <span className="get-check">获取验证码</span>
-          </div>
+          </div> */}
           <div className="input-line" >
             <Icon type="key" className="login-icon" />
             <input name="enrollPsw" type="text" placeholder="请输入登录密码" className="login-input" onChange={this.handleInputChange} value={this.state.enrollPsw} />
           </div>
-          <button type="button" className="login-button" onClick={this.getEnroll}>注册</button>
+          <button type="button" className="login-button"  onClick={() => { states.toggleTheme(this.state.enrollName, this.state.enrollPsw,2) }}>注册</button>
         </div>
       )
     }
   }
 
   // 当点击注册按钮
-  getEnroll = () => {
-    alert(`注册名字：${this.state.enrollName},注册密码：${this.state.enrollPsw}，注册手机号:${this.state.enrollTel}`)
-  }
+  // getEnroll = () => {
+  //   alert(`注册名字：${this.state.enrollName},注册密码：${this.state.enrollPsw}`)
+  // }
 
   // 当切换登录方式
   inEnroll = (check) => {

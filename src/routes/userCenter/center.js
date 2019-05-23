@@ -8,6 +8,7 @@ import Solution from './component/solution';
 import MyArticle from './component/myArticle';
 import articles from '../../mockData/data';
 import { UserContext } from '../../context';
+import { Breadcrumb, Icon } from 'antd'
 
 
 const list = [
@@ -21,21 +22,21 @@ const list = [
     name: '我的文章',
     type: 'file-text'
   },
-  {
-    id: 3,
-    name: '我的评论',
-    type: 'form'
-  },
-  {
-    id: 4,
-    name: '我的喜欢',
-    type: 'like'
-  },
-  {
-    id: 5,
-    name: '基础设置',
-    type: 'setting'
-  },
+  // {
+  //   id: 3,
+  //   name: '我的评论',
+  //   type: 'form'
+  // },
+  // {
+  //   id: 4,
+  //   name: '我的喜欢',
+  //   type: 'like'
+  // },
+  // {
+  //   id: 5,
+  //   name: '基础设置',
+  //   type: 'setting'
+  // },
 ]
 
 // const search = window.location.search;
@@ -99,6 +100,15 @@ export default class Center extends Component {
         {(states) => {
           return (
             <div id="center-content">
+              <Breadcrumb>
+                <Breadcrumb.Item >
+                  <Icon type="home" />
+                </Breadcrumb.Item>
+                <Breadcrumb.Item >
+                  <Icon type="user" />
+                  <span>个人中心</span>
+                </Breadcrumb.Item>
+              </Breadcrumb>
               <div className="left-menu">
                 <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
               </div>
