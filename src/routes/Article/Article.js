@@ -36,7 +36,7 @@ class Article extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({
-      userId: nextProps.userMsg.id
+      userId: nextProps.userMsg.userPO.id
     }, () => {
       this.getUserResult()
     })
@@ -78,7 +78,7 @@ class Article extends Component {
     let result = true;
     let data = {
       title: this.state.title,
-      userId: this.props.userMsg.id,
+      userId: this.props.userMsg.userPO.id,
       categoryId: this.state.sortId,
       articleStatus: res,
       content: this.state.editorContent
@@ -170,7 +170,7 @@ class Article extends Component {
   handleOk = () => {
     const data = {
       name: this.state.newSortName,
-      userId: this.props.userMsg.id,
+      userId: this.props.userMsg.userPO.id,
     }
     this.outNewSortName(data);
     this.setState({

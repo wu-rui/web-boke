@@ -27,7 +27,7 @@ export default class HeadNav extends Component {
 	}
 	点击下拉框菜单事件
 	menuOnClick = (res, key) => {
-		debugger
+
 		console.log(res)
 		if (key === '2') {
 			console.log('key', { key });
@@ -53,13 +53,13 @@ export default class HeadNav extends Component {
 		return result;
 	}
 	showUser = (result) => {
-		const res = result;
 		if (result.isLogin) {
 			this.getOutLog(result);
+
 			return (
 				<Dropdown overlay={this.menu(result)}>
 					<a className="ant-dropdown-link" href="#">
-						hello，{result.context.username}<Icon type="down" />
+						hello，{result.context.userPO.username}<Icon type="down" />
 					</a>
 				</Dropdown>
 			)
@@ -75,11 +75,11 @@ export default class HeadNav extends Component {
 							<div className="wrap nav-logo-wrap">
 								<Icon type="disconnect" className="nav-logo" />
 								<label className="nav-title">README</label>
-								<Search
+								{/* <Search
 									placeholder="input search text"
 									onSearch={value => console.log(value)}
 									style={{ width: 180, outline: 'none' }}
-								/>
+								/> */}
 							</div>
 							<div className="wrap nav-list-wrap">
 								<Menu

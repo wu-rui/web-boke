@@ -74,10 +74,14 @@ class App extends Component {
     if (localStorage.user_msg !== 'undefined') {
       let userMsg = localStorage.user_msg;
       if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
-        this.setState({
-          context: JSON.parse(userMsg).data.data,
-          isLogin: true
-        })
+        if (JSON.parse(userMsg).data.code === 1) {
+          this.setState({
+            context: JSON.parse(userMsg).data.data,
+            isLogin: true
+          })
+        } else {
+          alert('对不起您登录失败，请稍后再尝试')
+        }
       }
     } else {
       alert('对不起您没有登录，请登陆后在尝试')
@@ -91,27 +95,27 @@ class App extends Component {
       method: 2
     }
     let result = JSON.stringify(await connection(param))
-    if (result.code === 1) {
-      localStorage.removeItem('user_msg');
-      this.setState({
-        isLogin: false,
-      }, () => {
-        this.getLocalStorageUserMsg()
-      })
-    } else {
-      confirm({
-        title: '退出登录失败',
-        content: '请稍后再尝试',
-        cancelText: '取消',
-        okText: '确认',
-        onOk: () => {
-          console.log('OK');
-        },
-        onCancel() {
-          console.log('Cancel');
-        },
-      });
-    }
+    // if (result.code === 1) {
+    localStorage.removeItem('user_msg');
+    this.setState({
+      isLogin: false,
+    }, () => {
+      this.getLocalStorageUserMsg()
+    })
+    // } else {
+    //   confirm({
+    //     title: '退出登录失败',
+    //     content: '请稍后再尝试',
+    //     cancelText: '取消',
+    //     okText: '确认',
+    //     onOk: () => {
+    //       console.log('OK');
+    //     },
+    //     onCancel() {
+    //       console.log('Cancel');
+    //     },
+    //   });
+    // }
   }
   // 异步方法调用登录接口
   async getResult(data) {
@@ -121,8 +125,13 @@ class App extends Component {
       method: 1
     }
     // 把登录接口返回的数据放进localStorage里面
-    localStorage.setItem('user_msg', JSON.stringify(await connection(param)));
-    this.getLocalStorageUserMsg();
+    let result = await connection(param);
+    if (result.data.code === 1) {
+      localStorage.setItem('user_msg', JSON.stringify(result));
+      this.getLocalStorageUserMsg();
+    } else {
+      alert('登录失败，请稍户尝试')
+    }
   }
 
   // 异步方法调用注册接口

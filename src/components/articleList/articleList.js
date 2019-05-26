@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Pagination } from 'antd';
+import { Icon, Pagination, Button } from 'antd';
 import './articleList.less';
 
 export default class ArticleList extends Component {
@@ -20,26 +20,51 @@ export default class ArticleList extends Component {
   }
 
 
-  mapArticleList = (list) => {
+  // 这里type为1 ，是首页的样式，为2是个人中心的已发布，为3是个人中心的草稿箱
+  mapArticleList = (list, type) => {
     if (list !== undefined && list !== null && list.data.total > 0) {
       return list.data.data.map((item) => {
-        return (
-          <li className="info-li" key={item.id}>
-            <div className="info-li-info">
-              <p className="info-title">
-                <a href={`http://47.97.125.71:8080/article/detail/${item.id}`} target="_blank">
-                  {item.title}
-                </a>
-              </p>
-              <span className="info-content user-hover">作者：{item.username}</span>
-              <span className="info-content">发布于：{this.getTime(item.publishTime)}</span>
-              <p className="info-recode">
-                <span className="under-line remark-hover"><Icon type="message" className="remark-icon" />{item.reply}</span>
-                <span className="under-line"><Icon type="like" className="like-icon" />{item.like}</span>
-              </p>
-            </div>
-          </li>
-        )
+        if (type === 0 || type === 1) {
+          return (
+            <li className="info-li" key={item.id}>
+              <div className="info-li-info">
+                <p className="info-title">
+                  <a href={`http://47.97.125.71:8080/article/detail/${item.id}`} target="_blank">
+                    {item.title}
+                  </a>
+                </p>
+                <span className="info-content user-hover">作者：{item.username}</span>
+                <span className="info-content">发布于：{this.getTime(item.publishTime)}</span>
+                <p className="info-recode">
+                  <span className="under-line remark-hover"><Icon type="message" className="remark-icon" />{item.reply}</span>
+                  <span className="under-line"><Icon type="like" className="like-icon" />{item.like}</span>
+                  {
+                    (type === 0) ? '' : <Button>删除</Button>
+                  }
+                </p>
+              </div>
+            </li>
+          )
+        } else {
+          return (
+            <li className="info-li" key={item.id}>
+              <div className="info-li-info">
+                <p className="info-title">
+                  <a href={`http://47.97.125.71:8080/article/detail/${item.id}`} target="_blank">
+                    {item.title}
+                  </a>
+                </p>
+                <span className="info-content user-hover">作者：{item.username}</span>
+                <span className="info-content">发布于：{this.getTime(item.publishTime)}</span>
+                <p className="drafts">
+                  <span >状态：未发布    </span>
+                  <Button>继续编辑</Button>
+                  <Button>直接发布</Button>
+                </p>
+              </div>
+            </li>
+          )
+        }
       })
     }
   }
@@ -59,9 +84,11 @@ export default class ArticleList extends Component {
     return (
       <div className="list-info">
         <ul className="info-ul">
-          {this.mapArticleList(this.props.data)}
+          {
+            this.mapArticleList(this.props.data, this.props.type)
+          }
         </ul>
-        <Pagination current={this.state.current} onChange={this.props.page.changePages} total={this.state.total} pageSize={1} />
+        <Pagination current={this.state.current} onChange={this.props.page.changePages} total={this.state.total} pageSize={20} />
       </div>
     )
   }

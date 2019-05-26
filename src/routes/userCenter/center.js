@@ -6,7 +6,7 @@ import Setting from './component/mySetting';
 import Remark from './component/remark';
 import Solution from './component/solution';
 import MyArticle from './component/myArticle';
-import articles from '../../mockData/data';
+// import articles from '../../mockData/data';
 import { UserContext } from '../../context';
 import { Breadcrumb, Icon } from 'antd'
 
@@ -22,11 +22,11 @@ const list = [
     name: '我的文章',
     type: 'file-text'
   },
-  // {
-  //   id: 3,
-  //   name: '我的评论',
-  //   type: 'form'
-  // },
+  {
+    id: 3,
+    name: '草稿箱',
+    type: 'form'
+  },
   // {
   //   id: 4,
   //   name: '我的喜欢',
@@ -75,13 +75,13 @@ export default class Center extends Component {
   setMenuContent = (id, result) => {
     switch (id) {
       case 1: return (
-        <Solution />
+        <Solution data={result} id={id} />
       );
       case 2: return (
-        <MyArticle data={articles} />
+        <MyArticle type={1} id={id} />
       );
       case 3: return (
-        <Remark />
+        <MyArticle type={2} id={id} />
       );
       case 4: return (
         <Like />

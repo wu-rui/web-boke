@@ -3,9 +3,6 @@ import { Icon } from 'antd';
 import './leftMenu.less';
 
 export default class HeadNav extends Component {
-	// constructor(props) {
-	// 	super(props);
-	// }
 
 	mapList = (list, selectId) => {
 		return (

@@ -5,8 +5,11 @@ import HotList from '../../components/hotList/hotList';
 import ArticleList from '../../components/articleList/articleList';
 import { UserContext } from '../../context';
 import connection from '../../server';
-
+import Opinion from '../../components/opinions/opinions';
+import { Input } from 'antd';
 import './home.less'
+const Search = Input.Search;
+
 export default class Home extends Component {
 
   constructor(props) {
@@ -63,11 +66,19 @@ export default class Home extends Component {
                     <img src="/image/sea.jpg" className="list-img-banner" alt="首页轮播图照片" />
                   </div>
                   {/* 文章列表 */}
-                  <ArticleList data={this.state.articles} page={this.state} />
+                  <ArticleList data={this.state.articles} page={this.state} type={0} />
                 </div>
                 {/* 右侧菜单列表 */}
                 <div className="content-menu">
-                  <HotList />
+                  {/* <HotList /> */}
+                  <Opinion />
+                  <div className="input-search">
+                    <Search
+                      placeholder="请输入需要搜索的文章标题"
+                      onSearch={value => console.log(value)}
+                    />
+                  </div>
+
                 </div>
               </div>
             )
