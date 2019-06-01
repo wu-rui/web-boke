@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import HotList from '../../components/hotList/hotList';
-// import articles from '../../mockData/data';
+// import HotList from '../../components/hotList/hotList';
+// import { letter } from '../../mockData/data';
 import ArticleList from '../../components/articleList/articleList';
 import { UserContext } from '../../context';
 import connection from '../../server';
@@ -10,8 +10,10 @@ import { Input } from 'antd';
 import './home.less'
 const Search = Input.Search;
 
-export default class Home extends Component {
+// 现在需要做，留言功能，点赞功能，修改密码功能，还有删除功能
 
+
+export default class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -45,9 +47,12 @@ export default class Home extends Component {
     this.setState({
       articles: await connection(param),
     }, () => {
-      this.setState({
-        total: this.state.articles.data.total,
-      })
+
+      if (this.state.articles) {
+        this.setState({
+          total: this.state.articles.data.total,
+        })
+      }
     })
   }
 
@@ -65,8 +70,12 @@ export default class Home extends Component {
                   <div className="list-img">
                     <img src="/image/sea.jpg" className="list-img-banner" alt="首页轮播图照片" />
                   </div>
+                  {/* 轮播图 */}
+                  {/* <ControlledCarous el /> */}
                   {/* 文章列表 */}
-                  <ArticleList data={this.state.articles} page={this.state} type={0} />
+                  {
+                    this.state.articles === null ? '' : <ArticleList data={this.state.articles} page={this.state} type={1} />
+                  }
                 </div>
                 {/* 右侧菜单列表 */}
                 <div className="content-menu">
@@ -78,7 +87,6 @@ export default class Home extends Component {
                       onSearch={value => console.log(value)}
                     />
                   </div>
-
                 </div>
               </div>
             )

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import connection from '../../../server';
 import ArticleList from '../../../components/articleList/articleList';
+import { Modal } from 'antd';
+
+const confirm = Modal.confirm;
 
 export default class MyArticle extends Component {
   constructor(props) {
@@ -13,10 +17,11 @@ export default class MyArticle extends Component {
         this.pageOnChange(page)
       },
       articleStatus: this.props.type,
+      user: this.props.user,
+      delete: (id) => this.deleteArticle(id),
     }
   }
   componentDidMount() {
-    debugger
     this.getArticles();
   }
 
@@ -29,25 +34,45 @@ export default class MyArticle extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger
     this.setState({
       articleStatus: nextProps.type,
+      user: nextProps.user,
     }, () => {
       this.getArticles();
     })
   }
 
+  deleteArticle = (id) => {
+
+    axios.delete(`http://47.97.125.71:8080/article/${id}`).then(res => {
+      console.log(res)
+      if (res.data.code === 1) {
+        confirm({
+          title: '删除成功',
+          content: '即将刷新页面',
+        });
+        this.getArticles();
+      }
+    }).catch(res => {
+      console.log(res)
+    })
+  }
+
+
+
   async getArticles() {
-    debugger
-    let data = {
-      pageNum: this.state.currentPage,
-      userId: 1,
-      articleStatus: this.state.articleStatus,
+    let pageNum = this.state.currentPage;
+    let userId = this.state.user.userPO.id;
+    let articleStatus = this.state.articleStatus;
+    if (articleStatus === 2) {
+      articleStatus = 'publish';
+    } else {
+      articleStatus = 'drafts';
     }
     const param = {
-      data: data,
-      path: '/article/pager',
-      method: 1,
+      data: null,
+      path: `/article/${articleStatus}/${userId}/${pageNum}`,
+      method: 2,
     }
     this.setState({
       articles: await connection(param),

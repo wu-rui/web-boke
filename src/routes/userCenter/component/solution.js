@@ -1,32 +1,27 @@
 import React, { Component } from 'react';
-import { Radio, Button } from 'antd';
-
+import axios from 'axios';
+import { Radio, Button, Modal, Avatar, Upload, Icon, message } from 'antd';
+// import { Upload, Icon, message } from 'antd';
+// import UserAvatar from '../../../components/avatar/userAvatar';
+import connection from '../../../server';
+const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
-// let data = {
-//   name: '西西呀',
-//   birth: '2019-11-12',
-//   email: '174749006@qq.com',
-//   phone: '18685660952',
-//   selfintro: '账号，昵称，个人简介，性别，头像，生日，邮件，手机',
-//   sex: 2,
-//   src: 'http://img1.vued.vanthink.cn/vued0a233185b6027244f9d43e653227439a.png',
-// }
 
 export default class Solution extends Component {
-
   constructor(props) {
     super(props);
+    console.log('Props1', this.props)
     this.state = {
       value: 1,
       isDisabled: true,
       data: {
-        name: '',
-        birth: '',
-        email: '',
-        phone: '',
-        selfintro: '',
-        sex: 2,
-        src: '',
+        userId: null,
+        name: null,
+        birth: null,
+        email: null,
+        phone: null,
+        selfintro: null,
+        sex: null,
       },
       src: null,
       imgFile: null,
@@ -35,27 +30,29 @@ export default class Solution extends Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
-    let newData = nextProps.data;
-    this.setState({
-      data: {
-        name: newData.userInfoPO.name,
-        birth: newData.userInfoPO.birthday,
-        email: newData.userPO.email,
-        phone: newData.userPO.phone,
-        selfintro: newData.userInfoPO.birthday,
-        sex: newData.userInfoPO.sex,
-        src: newData.userInfoPO.headUrl,
-      },
-      src: newData.userInfoPO.headUrl,
-    }, () => {
-      let origin = this.state.data;
-      this.setState({
-        originData: origin,
-      })
-    })
+  componentDidMount() {
+    console.log('Props2', this.props)
+    this.getUserInfo(this.props.states)
   }
+
+  getUserInfo = (result) => {
+    if (result.isLogin) {
+      let data = result.context;
+      this.setState({
+        data: {
+          userId: data.userPO.id,
+          name: data.userInfoPO.name,
+          birth: data.userInfoPO.birthday,
+          email: data.userPO.email,
+          phone: data.userPO.phone,
+          selfintro: data.userInfoPO.birthday,
+          sex: data.userInfoPO.sex,
+        },
+        src: data.userInfoPO.headUrl,
+      })
+    }
+  }
+
 
   isEdit = (isEdit) => {
     if (isEdit) {
@@ -73,11 +70,34 @@ export default class Solution extends Component {
   }
 
   onSaveEdit = () => {
-    this.setState({
-      isDisabled: true,
-      originData: this.state.data,//这里有待考量
-    })
-    // 这里需要调接口，返回数据后再重新获取数据，
+    confirm({
+      content: '确定修改您的个人信息吗',
+      cancelText: '取消',
+      okText: '确认',
+      onOk: () => {
+        this.toSaveInfo();
+      },
+      onCancel: () => {
+        this.onCancel();
+      },
+    });
+  }
+
+  async toSaveInfo() {
+    let data = this.state.data;
+    const param = {
+      data: data,
+      path: '/users/update/info',
+      method: 1
+    }
+    let result = await connection(param);
+    if (result.data.code === 1) {
+      this.props.states.changeUserInfo(this.state.data.userId);
+      this.setState({
+        isDisabled: true,
+        originData: this.state.data,
+      })
+    }
   }
 
   onCancel = () => {
@@ -130,7 +150,24 @@ export default class Solution extends Component {
     this.setState({
       isChangeImg: false,
     })
-    // 这里需要调接口，重新拿数据，
+    var fd = new FormData()
+    fd.append('file', this.state.imgFile)
+    let config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+    axios.post(`http://47.97.125.71:8080/users/head/${this.state.data.userId}`, fd, config).then(res => {
+      console.log(res)
+      if (res.data.code === 1) {
+        // this.setState({
+        //   src: res.data.data.headUrl,
+        // })
+        this.props.states.changeUserInfo(this.state.data.userId);
+      }
+    }).catch(res => {
+      console.log(res)
+    })
   }
 
   cancleChangeImg = () => {
@@ -140,21 +177,55 @@ export default class Solution extends Component {
       isChangeImg: false,
     })
   }
+  getTime = (userTime) => {
+    let date = new Date(userTime);
+    let year = date.getFullYear();  // 获取完整的年份(4位,1970)
+    let month = (date.getMonth() < 10) ? `0${date.getMonth() + 1}` : date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
+    let day = date.getDate();  // 获取日(1-31)
+    let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+    let hour = date.getHours();  // 获取小时数(0-23)
+    let minutes = date.getMinutes();  // 获取分钟数(0-59)
+    let second = date.getSeconds();  // 获取秒数(0-59)
+    return (`${year}-${month}-${day}`);
+  }
 
+  noPicture = (isChangeImg, src) => {
+    return (
+      <div style={{ display: 'inline-block' }}>
+        <Avatar style={{ position: 'absolute', top: 35, left: 80, }} size={64} icon="user" />
+        <span className="check-img">
+          <input type="file" id="fileElem" className="check-avatar" accept="image/gif,image/jpeg,image/jpg,image/png" onChange={this.imgCahnge} />
+          {
+            this.changeImg(isChangeImg)
+          }
+        </span>
+      </div>
+    )
+  }
+  showPIcture = (isChangeImg, src) => {
+    return (
+      <div style={{ display: 'inline-block' }}>
+        <img className="avatar" className="head-photo" src={src} alt="头像图片" />
+        <span className="check-img">
+          <input type="file" id="fileElem" className="check-avatar" accept="image/gif,image/jpeg,image/jpg,image/png" onChange={this.imgCahnge} />
+          {
+            this.changeImg(isChangeImg)
+          }
+        </span>
+      </div>
+    )
+  }
   render() {
-    if (this.state.data.name !== '') {
+    if (this.state.data.name !== null) {
       return (
         <div className="solution">
           <ul>
             <li style={{ height: 150, lineHeight: '148px', position: 'relative' }}>
               <span>头像</span>
-              <img className="avatar" className="head-photo" src={this.state.src} alt="头像图片" />
-              <span className="check-img">
-                <input type="file" id="fileElem" className="check-avatar" accept="image/gif,image/jpeg,image/jpg,image/png" onChange={this.imgCahnge} />
-                {
-                  this.changeImg(this.state.isChangeImg)
-                }
-              </span>
+              {
+                this.state.src === null ? this.noPicture(this.state.isChangeImg, this.state.src) : this.showPIcture(this.state.isChangeImg, this.state.src)
+              }
+              {/* <UserAvatar /> */}
               {this.isEdit(this.state.isDisabled)}
             </li>
             <li>
@@ -193,4 +264,7 @@ export default class Solution extends Component {
       )
     }
   }
-} 
+}
+
+
+

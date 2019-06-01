@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { UserContext } from './context';
+import { Redirect } from 'react-router';
 // import RouterWrap from './router';
 import connection from './server';
 import { Modal } from 'antd';
@@ -11,20 +12,19 @@ import './App.css';
 
 const confirm = Modal.confirm;
 
-// const data = {
-//   username: "徐高俊",
-//   password: "123456"
-// }
-
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      src: '',
       isLogin: false,
+      isOutLog: true,
       context: UserContext.contect,
       toggleTheme: this.updateContext,
       outlog: this.logOut,
+      updatePsw: (res) => this.onClickUpdate(res),
+      changeUserInfo: (id) => this.getUserInfo(id)
     }
   }
   componentDidMount() {
@@ -51,6 +51,7 @@ class App extends Component {
     }
   }
 
+  // 退出登录
   logOut = (key) => {
     if (key === '2') {
       confirm({
@@ -66,6 +67,8 @@ class App extends Component {
           console.log('Cancel');
         },
       });
+    } else if (key === '0') {
+
     }
   }
 
@@ -75,10 +78,11 @@ class App extends Component {
       let userMsg = localStorage.user_msg;
       if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
         if (JSON.parse(userMsg).data.code === 1) {
+          let result = JSON.parse(userMsg).data.data;
+
           this.setState({
-            context: JSON.parse(userMsg).data.data,
             isLogin: true
-          })
+          }, () => this.getUserInfo(result.userPO.id))
         } else {
           alert('对不起您登录失败，请稍后再尝试')
         }
@@ -88,35 +92,71 @@ class App extends Component {
     }
   }
 
+  async onClickUpdate(res) {
+    if (res.newPsw === res.turePsw) {
+      let data = {
+        userId: res.userId,
+        oldPassword: res.oldPsw,
+        newPassword: res.newPsw,
+      }
+      const param = {
+        data: data,
+        path: '/users/update/pwd',
+        method: 1
+      }
+      let result = await connection(param);
+      if (result.data.code === 1) {
+        confirm({
+          title: '密码修改成功',
+          content: '密码修改成功，点击确定重新登录',
+          footer: '确定',
+        });
+        localStorage.removeItem('user_msg');
+        this.setState({
+          isLogin: false,
+        })
+      } else {
+        alert(result.data.msg);
+      }
+    } else {
+      alert('前后密码不一致，请确认新的密码是否输入正确');
+    }
+  }
+
+  async getUserInfo(id) {
+    if (id) {
+      const param = {
+        data: null,
+        path: `/users/${id}`,
+        method: 2
+      }
+      let res = await connection(param);
+
+      if (res.data.code === 1) {
+        let data = res.data.data;
+        this.setState({
+          context: data,
+          isLogin: true,
+          src: data.userInfoPO.headUrl,
+        })
+      }
+    }
+  }
+
   async outLogin() {
     const param = {
       data: null,
       path: '/logins/out',
       method: 2
     }
-    let result = JSON.stringify(await connection(param))
-    // if (result.code === 1) {
+    JSON.stringify(await connection(param))
     localStorage.removeItem('user_msg');
     this.setState({
       isLogin: false,
-    }, () => {
-      this.getLocalStorageUserMsg()
+      isOutLog: false,
     })
-    // } else {
-    //   confirm({
-    //     title: '退出登录失败',
-    //     content: '请稍后再尝试',
-    //     cancelText: '取消',
-    //     okText: '确认',
-    //     onOk: () => {
-    //       console.log('OK');
-    //     },
-    //     onCancel() {
-    //       console.log('Cancel');
-    //     },
-    //   });
-    // }
   }
+
   // 异步方法调用登录接口
   async getResult(data) {
     const param = {
@@ -128,9 +168,11 @@ class App extends Component {
     let result = await connection(param);
     if (result.data.code === 1) {
       localStorage.setItem('user_msg', JSON.stringify(result));
-      this.getLocalStorageUserMsg();
+      this.setState({
+        isLogin: true,
+      }, () => this.getLocalStorageUserMsg())
     } else {
-      alert('登录失败，请稍户尝试')
+      alert(result.data.msg)
     }
   }
 
@@ -138,7 +180,7 @@ class App extends Component {
   async getEnroll(data) {
     const param = {
       data: data,
-      path: '/logins/in',
+      path: '/users/register',
       method: 1
     }
     // 把登录接口返回的数据放进localStorage里面

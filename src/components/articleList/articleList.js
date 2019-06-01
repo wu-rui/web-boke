@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Icon, Pagination, Button } from 'antd';
+import { Icon, Pagination, Button, Avatar } from 'antd';
 import './articleList.less';
 
 export default class ArticleList extends Component {
@@ -8,7 +8,9 @@ export default class ArticleList extends Component {
     super(props);
     this.state = {
       current: this.props.page.currentPage,
-      total: this.props.page.total,
+      total: this.props.page.total ? this.props.page.total : 1,
+      list: this.props.data,
+      type: this.props.type,
     }
   }
 
@@ -16,32 +18,37 @@ export default class ArticleList extends Component {
     this.setState({
       current: nextprops.page.currentPage,
       total: nextprops.data.data.total,
+      list: nextprops.data,
+      type: nextprops.type,
     })
   }
 
-
+  // 删除功能，需要完善修改密码，修改个人信息，头像显示，和注册
   // 这里type为1 ，是首页的样式，为2是个人中心的已发布，为3是个人中心的草稿箱
   mapArticleList = (list, type) => {
+
     if (list !== undefined && list !== null && list.data.total > 0) {
       return list.data.data.map((item) => {
-        if (type === 0 || type === 1) {
+        if (type === 1 || type === 2) {
+
           return (
-            <li className="info-li" key={item.id}>
+            <li className="info-li" key={item.id} value={item.id}>
               <div className="info-li-info">
                 <p className="info-title">
                   <a href={`http://47.97.125.71:8080/article/detail/${item.id}`} target="_blank">
                     {item.title}
                   </a>
                 </p>
-                <span className="info-content user-hover">作者：{item.username}</span>
+                {
+                  type === 2 ? '' : <span className="info-content user-hover"><Avatar icon="user" src={item.headUrl} />{item.username}</span>
+                }
                 <span className="info-content">发布于：{this.getTime(item.publishTime)}</span>
                 <p className="info-recode">
-                  <span className="under-line remark-hover"><Icon type="message" className="remark-icon" />{item.reply}</span>
-                  <span className="under-line"><Icon type="like" className="like-icon" />{item.like}</span>
-                  {
-                    (type === 0) ? '' : <Button>删除</Button>
-                  }
+                  <span className="under-line remark-hover"><Icon type="message" className="remark-icon" />{item.commontNum}</span>
+                  <span className="under-line"><Icon type="like" className="like-icon" />{item.praisePoint}</span>
+                  <span className="under-line"><Icon type="read" className="like-icon" />{item.readNumber}</span>
                 </p>
+
               </div>
             </li>
           )
@@ -54,12 +61,12 @@ export default class ArticleList extends Component {
                     {item.title}
                   </a>
                 </p>
-                <span className="info-content user-hover">作者：{item.username}</span>
-                <span className="info-content">发布于：{this.getTime(item.publishTime)}</span>
+                {/* <span className="info-content user-hover"><Avatar icon="user" src={item.headUrl} />{item.username}</span>                <span className="info-content">发布于：{this.getTime(item.publishTime)}</span> */}
                 <p className="drafts">
                   <span >状态：未发布    </span>
                   <Button>继续编辑</Button>
                   <Button>直接发布</Button>
+                  <Button onClick={() => this.props.page.delete(item.id)} >删除</Button>
                 </p>
               </div>
             </li>
@@ -85,28 +92,11 @@ export default class ArticleList extends Component {
       <div className="list-info">
         <ul className="info-ul">
           {
-            this.mapArticleList(this.props.data, this.props.type)
+            this.mapArticleList(this.state.list, this.state.type)
           }
         </ul>
-        <Pagination current={this.state.current} onChange={this.props.page.changePages} total={this.state.total} pageSize={20} />
+        <Pagination hideOnSinglePage current={this.state.current} onChange={this.props.page.changePages} total={this.state.total} pageSize={20} />
       </div>
     )
   }
 }
-
-
-
-// articleStatus: 2
-// categoryId: 2
-// content: null
-// contentFileUrl: null
-// createTime: null
-// deleted: null
-// id: 98859182924846930
-// pageUrl: null
-// praisePoint: 0
-// publishTime: 1558344248469
-// readNumber: 0
-// title: "这是一篇基于大数据的文章"
-// updateTime: null
-// userId: null

@@ -9,24 +9,17 @@ import { UserContext } from '../../context';
 
 import './DefaultLayout.less'
 export default class DefaultLayout extends Component {
-  // constructor(props) {
-  //   super(props);
-  //   console.log('props', props)
-  // }
+
   render() {
     return (
-      <UserContext.Consumer>
-        {(result) => (
-          <div id="DefaultLayout">
-            <HeadNav match={this.props.match} location={this.props.location} history={this.props.history} user={result} />
-            <div className="content-wrap">
-              <Route path="/" component={Home} exact />
-              <Route path="/center" component={center} />
-            </div>
-            <Footer />
-          </div >
-        )}
-      </UserContext.Consumer>
+      <div id="DefaultLayout">
+        <HeadNav match={this.props.match} location={this.props.location} history={this.props.history} />
+        <div className="content-wrap">
+          <Route path="/" component={Home} exact />
+          <Route path="/center" component={center} />
+        </div>
+        <Footer />
+      </div >
     );
   }
 }

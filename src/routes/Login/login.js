@@ -64,7 +64,7 @@ export default class Login extends Component {
         <div className="login-box">
           <div className="login-method">
             <span className="method-text" style={{ float: 'left' }}>密码登录</span>
-            <span className="checkout-method" onClick={() => this.inEnroll(this.state.isLogin)}><span style={{ color: 'gray', fontSize: 15 }}>已有账号?  </span>注册</span>
+            <span className="checkout-method" onClick={() => this.inEnroll(this.state.isLogin)}><span style={{ color: 'gray', fontSize: 15 }}>没有账号?  </span>注册</span>
           </div>
           <div className="input-line" >
             <Icon type="user" className="login-icon" />
@@ -72,9 +72,9 @@ export default class Login extends Component {
           </div>
           <div className="input-line" >
             <Icon type="key" className="login-icon" />
-            <input name="password" type="text" placeholder="请输入登录密码" className="login-input" onChange={this.handleInputChange} value={this.state.password} />
+            <input name="password" type="password" placeholder="请输入登录密码" className="login-input" onChange={this.handleInputChange} value={this.state.password} />
           </div>
-          <button type="button" className="login-button" onClick={() => { states.toggleTheme(this.state.username, this.state.password,1) }}>登录</button>
+          <button type="button" className="login-button" onClick={() => { states.toggleTheme(this.state.username, this.state.password, 1) }}>登录</button>
         </div>
       )
     } else {
@@ -89,20 +89,11 @@ export default class Login extends Component {
             <Icon type="user" className="login-icon" />
             <input name="enrollName" type="text" autoFocus placeholder="请输入用户名" className="login-input" onChange={this.handleInputChange} value={this.state.enrollName} />
           </div>
-          {/* <div className="input-line" >
-            <Icon type="phone" className="login-icon" />
-            <input name="enrollTel" type="text" maxLength={11} placeholder="请输入手机号" className="login-input" onChange={this.handleInputChange} value={this.state.enrollTel} />
-          </div>
-          <div className={`input-line ${this.state.isHidden}`} >
-            <Icon type="message" className="login-icon" />
-            <input name="enrollCheck" type="text" placeholder="请输入验证码" className="login-input" onChange={this.handleInputChange} value={this.state.enrollCheck} />
-            <span className="get-check">获取验证码</span>
-          </div> */}
           <div className="input-line" >
             <Icon type="key" className="login-icon" />
-            <input name="enrollPsw" type="text" placeholder="请输入登录密码" className="login-input" onChange={this.handleInputChange} value={this.state.enrollPsw} />
+            <input name="enrollPsw" type="password" placeholder="请输入登录密码" className="login-input" onChange={this.handleInputChange} value={this.state.enrollPsw} />
           </div>
-          <button type="button" className="login-button"  onClick={() => { states.toggleTheme(this.state.enrollName, this.state.enrollPsw,2) }}>注册</button>
+          <button type="button" className="login-button" onClick={() => { states.toggleTheme(this.state.enrollName, this.state.enrollPsw, 2) }}>注册</button>
         </div>
       )
     }
@@ -139,7 +130,7 @@ export default class Login extends Component {
             return (
               <div className="login-page">
                 <div className="top-line">
-                  <label className="page-title">README</label>
+                  <label className="page-title">小博客</label>
                 </div>
                 {this.showPage(states)}
               </div>
@@ -150,3 +141,14 @@ export default class Login extends Component {
     )
   }
 }
+
+
+{/* <div className="input-line" >
+            <Icon type="phone" className="login-icon" />
+            <input name="enrollTel" type="text" maxLength={11} placeholder="请输入手机号" className="login-input" onChange={this.handleInputChange} value={this.state.enrollTel} />
+          </div>
+          <div className={`input-line ${this.state.isHidden}`} >
+            <Icon type="message" className="login-icon" />
+            <input name="enrollCheck" type="text" placeholder="请输入验证码" className="login-input" onChange={this.handleInputChange} value={this.state.enrollCheck} />
+            <span className="get-check">获取验证码</span>
+          </div> */}

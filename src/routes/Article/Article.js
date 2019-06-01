@@ -8,6 +8,7 @@ import './article.less'
 class Article extends Component {
   constructor(props, context) {
     super(props, context);
+    console.log('这个context', context)
     this.state = {
       editorContent: null,
       sortId: null,
@@ -35,12 +36,14 @@ class Article extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({
-      userId: nextProps.userMsg.userPO.id
-    }, () => {
-      this.getUserResult()
-    })
 
+    if (nextProps.userMsg !== undefined) {
+      this.setState({
+        userId: nextProps.userMsg.userPO.id
+      }, () => {
+        this.getUserResult()
+      })
+    }
   }
 
   // 获取用户分类接口
@@ -66,7 +69,12 @@ class Article extends Component {
       result: await connection(param)
     }, () => {
       if (this.state.result.data.code === 1) {
-        this.props.history.push('/center?id=2');
+        if (data.articleStatus === 1) {
+          this.props.history.push('/center?id=3');
+        } else {
+          this.props.history.push('/center?id=2');
+        }
+
       }
       // window.location.href = `http://47.97.125.71:8080/article/detail/${this.state.result.data.changeData.id}`;
     })

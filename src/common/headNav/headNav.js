@@ -4,7 +4,6 @@ import './headNav.less';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../context';
 
-const Search = Input.Search;
 export default class HeadNav extends Component {
 	constructor(props) {
 		super(props);
@@ -12,7 +11,6 @@ export default class HeadNav extends Component {
 		var currentName = location[location.length - 1] ? location[location.length - 1] : 'home';
 		this.state = {
 			current: currentName,
-			userName: null,
 		}
 	}
 
@@ -21,20 +19,19 @@ export default class HeadNav extends Component {
 		return (
 			<Menu onClick={({ key }) => { this.menuOnClick(result, key) }}>
 				<Menu.Item key="1"><Link to="/center" target="_blank">个人中心</Link></Menu.Item>
+				{/* <Menu.Item key="1"><Link to="/center">个人中心</Link></Menu.Item> */}
 				<Menu.Item key="2">退出登录</Menu.Item>
 			</Menu>
 		)
 	}
-	点击下拉框菜单事件
-	menuOnClick = (res, key) => {
 
+	// 点击下拉框菜单事件
+	menuOnClick = (res, key) => {
 		console.log(res)
 		if (key === '2') {
 			console.log('key', { key });
-			// this.getOutLog;
 			res.outlog(key);
 		}
-		// console.log('resulr', result);
 		console.log('key', { key });
 	}
 
@@ -42,24 +39,14 @@ export default class HeadNav extends Component {
 		this.setState({ current: e.key });
 	}
 
-	componentDidMount() {
-		if (this.props.user.isLogin) {
-			this.setState({
-				username: this.props.user.context.username,
-			})
-		}
-	}
-	getOutLog = (result) => {
-		return result;
-	}
 	showUser = (result) => {
 		if (result.isLogin) {
-			this.getOutLog(result);
-
+			
+			// this.getOutLog(result);
 			return (
 				<Dropdown overlay={this.menu(result)}>
 					<a className="ant-dropdown-link" href="#">
-						hello，{result.context.userPO.username}<Icon type="down" />
+						<img src={result.src} alt="头像" /><Icon type="down" />
 					</a>
 				</Dropdown>
 			)
@@ -73,13 +60,9 @@ export default class HeadNav extends Component {
 					<div id="HeadNav">
 						<div className="nav-wrap">
 							<div className="wrap nav-logo-wrap">
-								<Icon type="disconnect" className="nav-logo" />
-								<label className="nav-title">README</label>
-								{/* <Search
-									placeholder="input search text"
-									onSearch={value => console.log(value)}
-									style={{ width: 180, outline: 'none' }}
-								/> */}
+								{/* <Icon type="disconnect" className="nav-logo" /> */}
+								<img style={{ width: 30, marginBottom: 2, marginRight: 5 }} src="/image/logo.jpg" alt="小博客图标" />
+								<label className="nav-title">小博客</label>
 							</div>
 							<div className="wrap nav-list-wrap">
 								<Menu
@@ -93,10 +76,7 @@ export default class HeadNav extends Component {
 									<Menu.Item key="writePage">
 										<Link to="/write" target="_blank">写文章</Link>
 									</Menu.Item>
-									{
-
-										this.showUser(result)
-									}
+									{this.showUser(result)}
 								</Menu>
 							</div>
 						</div>

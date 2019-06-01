@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
-import './center.less'
+import { Redirect } from 'react-router';
 import LeftMenu from '../../common/leftMenu/leftMenu'
 import Like from './component/myLike';
-import Setting from './component/mySetting';
-import Remark from './component/remark';
+// import Setting from './component/mySetting';
+// import Remark from './component/remark';
 import Solution from './component/solution';
 import MyArticle from './component/myArticle';
 // import articles from '../../mockData/data';
 import { UserContext } from '../../context';
-import { Breadcrumb, Icon } from 'antd'
-
+import { Breadcrumb, Icon } from 'antd';
+import './center.less'
+// const confirm = Modal.confirm;
 
 const list = [
   {
@@ -27,19 +28,12 @@ const list = [
     name: '草稿箱',
     type: 'form'
   },
-  // {
-  //   id: 4,
-  //   name: '我的喜欢',
-  //   type: 'like'
-  // },
-  // {
-  //   id: 5,
-  //   name: '基础设置',
-  //   type: 'setting'
-  // },
+  {
+    id: 4,
+    name: '修改密码',
+    type: 'property-safety'
+  }
 ]
-
-// const search = window.location.search;
 
 export default class Center extends Component {
 
@@ -47,13 +41,19 @@ export default class Center extends Component {
     super(props);
     this.state = {
       menuId: 1,
+      // updatePsw: (psw) => this.updatePassword(psw),
     }
   }
+
 
   componentDidMount() {
     if (window.location.search === '?id=2') {
       this.setState({
         menuId: 2,
+      })
+    } else if (window.location.search === '?id=3') {
+      this.setState({
+        menuId: 3,
       })
     }
   }
@@ -72,25 +72,25 @@ export default class Center extends Component {
     })
   }
 
-  setMenuContent = (id, result) => {
-    switch (id) {
-      case 1: return (
-        <Solution data={result} id={id} />
-      );
-      case 2: return (
-        <MyArticle type={1} id={id} />
-      );
-      case 3: return (
-        <MyArticle type={2} id={id} />
-      );
-      case 4: return (
-        <Like />
-      );
-      case 5: return (
-        <Setting userMsg={result} />
-      );
-      default:
-        break;
+  setMenuContent = (id, states) => {
+    if (states.context !== undefined) {
+      switch (id) {
+        case 1: return (
+          <Solution id={states.context.userPO.id} states={states} />
+        );
+        case 2: return (
+          <MyArticle type={id} user={states.context} />
+        );
+        case 3: return (
+          <MyArticle type={id} user={states.context} />
+        );
+        case 4: return (
+          <Like update={this.state.updatePsw} user={states.context} updatePsw={states.updatePsw} />
+        );
+
+        default:
+          break;
+      }
     }
   }
 
@@ -98,27 +98,26 @@ export default class Center extends Component {
     return (
       <UserContext.Consumer>
         {(states) => {
-          return (
-            <div id="center-content">
-              <Breadcrumb>
-                <Breadcrumb.Item >
-                  <Icon type="home" />
-                </Breadcrumb.Item>
-                <Breadcrumb.Item >
-                  <Icon type="user" />
-                  <span>个人中心</span>
-                </Breadcrumb.Item>
-              </Breadcrumb>
-              <div className="left-menu">
-                <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
+          if (states.isOutLog) {
+            return (
+              <div id="center-content">
+                <Breadcrumb>
+                  <Breadcrumb.Item ><Icon type="home" /></Breadcrumb.Item>
+                  <Breadcrumb.Item ><Icon type="user" /><span>个人中心</span></Breadcrumb.Item>
+                </Breadcrumb>
+                <div className="left-menu">
+                  <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
+                </div>
+                <div className="center-user">
+                  {
+                    this.setMenuContent(this.state.menuId, states)
+                  }
+                </div>
               </div>
-              <div className="center-user">
-                {
-                  this.setMenuContent(this.state.menuId, states.context)
-                }
-              </div>
-            </div>
-          )
+            )
+          } else {
+            return (<Redirect to="/login" />)
+          }
         }}
       </UserContext.Consumer>
     )
