@@ -24,7 +24,8 @@ class App extends Component {
       toggleTheme: this.updateContext,
       outlog: this.logOut,
       updatePsw: (res) => this.onClickUpdate(res),
-      changeUserInfo: (id) => this.getUserInfo(id)
+      changeUserInfo: (id) => this.getUserInfo(id),
+      // sendLetter: (value) => this.sendLetters(value)
     }
   }
   componentDidMount() {
@@ -79,7 +80,6 @@ class App extends Component {
       if (userMsg !== null && userMsg !== undefined && userMsg.length > 0) {
         if (JSON.parse(userMsg).data.code === 1) {
           let result = JSON.parse(userMsg).data.data;
-
           this.setState({
             isLogin: true
           }, () => this.getUserInfo(result.userPO.id))
@@ -131,14 +131,15 @@ class App extends Component {
         method: 2
       }
       let res = await connection(param);
-
-      if (res.data.code === 1) {
-        let data = res.data.data;
-        this.setState({
-          context: data,
-          isLogin: true,
-          src: data.userInfoPO.headUrl,
-        })
+      if (res) {
+        if (res.data.code === 1) {
+          let data = res.data.data;
+          this.setState({
+            context: data,
+            isLogin: true,
+            src: data.userInfoPO.headUrl,
+          })
+        }
       }
     }
   }

@@ -60,10 +60,22 @@ export default class Like extends Component {
   render() {
     return (
       <div className="password">
-        <Input name="userName" placeholder="请输入用户名" allowClear onChange={this.onChange} />
-        <Input.Password name="oldPsw" allowClear placeholder="请输入旧的密码" onChange={this.onChange} />
-        <Input.Password name="newPsw" oldPswallowClear placeholder="请输入新的密码" onChange={this.onChange} />
-        <Input.Password name="turePsw" allowClear placeholder="请确认新的密码" onChange={this.onChange} />
+        <p>
+          <span>用户名：</span>
+          <Input name="userName" placeholder="请输入用户名" allowClear onChange={this.onChange} />
+        </p>
+        <p>
+          <span>旧密码：</span>
+          <Input.Password name="oldPsw" allowClear placeholder="请输入旧的密码" onChange={this.onChange} />
+        </p>
+        <p>
+          <span>新密码：</span>
+          <Input.Password name="newPsw" oldPswallowClear placeholder="请输入新的密码" onChange={this.onChange} />
+        </p>
+        <p>
+          <span>新密码：</span>
+          <Input.Password name="turePsw" allowClear placeholder="请再次确认新的密码" onChange={this.onChange} />
+        </p>
         <Button style={{ width: 260 }} onClick={() => this.props.updatePsw(this.state)}>确定修改</Button>
       </div>
     )

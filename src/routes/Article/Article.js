@@ -24,6 +24,24 @@ class Article extends Component {
   }
   componentDidMount() {
     const editor = new E(this.editorElemTop, this.editorElemContnet)
+    editor.customConfig.uploadImgServer = 'http://47.97.125.71:8080/upload';
+    editor.customConfig.showLinkImg = false;
+    editor.customConfig.uploadFileName = 'file';
+    editor.customConfig.uploadImgMaxSize = 200 * 1024;
+    editor.customConfig.uploadImgMaxLength = 5;
+    editor.customConfig.uploadImgHooks = {
+      // 如果服务器端返回的不是 {errno:0, data: [...]} 这种格式，可使用该配置
+      // （但是，服务器端返回的必须是一个 JSON 格式字符串！！！否则会报错）
+      customInsert: function (insertImg, result, editor) {
+        // 图片上传并返回结果，自定义插入图片的事件（而不是编辑器自动插入图片！！！）
+        // insertImg 是插入图片的函数，editor 是编辑器对象，result 是服务器端返回的结果
+        // 举例：假如上传图片成功后，服务器端返回的是 {url:'....'} 这种格式，即可这样插入图片：
+        var url = result.data;
+        // editor.txt.append(this.bedeckImgUrl(url))
+        editor.cmd.do('insertHTML', `<p class="all-img"><img src=${url} /></p>`)
+        // result 必须是一个 JSON 格式字符串！！！否则报错
+      }
+    }
     // 设置为100是因为这个页面有弹窗，而其便器的默认值是10000，需要改变其值大小
     editor.customConfig.zIndex = 100
     // 使用 onchange 函数监听内容的变化，并实时更新到 state 中
@@ -32,11 +50,17 @@ class Article extends Component {
         editorContent: html
       })
     }
+    editor.customConfig.debug = window.location.href.indexOf('wangeditor_debug_mode=1') > 0
     editor.create();
   }
 
-  componentWillReceiveProps(nextProps) {
+  bedeckImgUrl = (url) => {
+    return (
+      <img src={url} alt="编辑器图片" />
+    )
+  }
 
+  componentWillReceiveProps(nextProps) {
     if (nextProps.userMsg !== undefined) {
       this.setState({
         userId: nextProps.userMsg.userPO.id
@@ -74,9 +98,7 @@ class Article extends Component {
         } else {
           this.props.history.push('/center?id=2');
         }
-
       }
-      // window.location.href = `http://47.97.125.71:8080/article/detail/${this.state.result.data.changeData.id}`;
     })
   }
 
@@ -91,6 +113,7 @@ class Article extends Component {
       articleStatus: res,
       content: this.state.editorContent
     }
+    alert(data.content)
     for (var i in data) {
       if (result && (data[i] === null || data[i] === undefined || data[i] === '')) {
         result = false;

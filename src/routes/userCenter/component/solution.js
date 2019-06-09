@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Radio, Button, Modal, Avatar, Upload, Icon, message } from 'antd';
+import { Radio, Button, Modal, Avatar, Upload, Icon, message, DatePicker } from 'antd';
 // import { Upload, Icon, message } from 'antd';
 // import UserAvatar from '../../../components/avatar/userAvatar';
 import connection from '../../../server';
+import moment from 'moment';
 const confirm = Modal.confirm;
 const RadioGroup = Radio.Group;
+const dateFormat = 'YYYY/MM/DD';
 
 export default class Solution extends Component {
   constructor(props) {
@@ -17,23 +19,27 @@ export default class Solution extends Component {
       data: {
         userId: null,
         name: null,
-        birth: null,
+        birthday: null,
         email: null,
         phone: null,
         selfintro: null,
         sex: null,
       },
+      birth: null,
       src: null,
       imgFile: null,
       isChangeImg: false,
       originData: null,
     };
   }
-
   componentDidMount() {
     console.log('Props2', this.props)
     this.getUserInfo(this.props.states)
   }
+
+  // componentWillReceiveProps(nextProps) {
+  //   this.getUserInfo(nextProps.states)
+  // }
 
   getUserInfo = (result) => {
     if (result.isLogin) {
@@ -42,13 +48,19 @@ export default class Solution extends Component {
         data: {
           userId: data.userPO.id,
           name: data.userInfoPO.name,
-          birth: data.userInfoPO.birthday,
+          username: data.userPO.username,
+          birthday: data.userInfoPO.birthday,
           email: data.userPO.email,
           phone: data.userPO.phone,
           selfintro: data.userInfoPO.birthday,
           sex: data.userInfoPO.sex,
         },
+        birth: data.userInfoPO.birthday,
         src: data.userInfoPO.headUrl,
+      }, () => {
+        this.setState({
+          originData: this.state.data,
+        })
       })
     }
   }
@@ -97,6 +109,8 @@ export default class Solution extends Component {
         isDisabled: true,
         originData: this.state.data,
       })
+    } else {
+      alert(result.data.msg)
     }
   }
 
@@ -160,9 +174,6 @@ export default class Solution extends Component {
     axios.post(`http://47.97.125.71:8080/users/head/${this.state.data.userId}`, fd, config).then(res => {
       console.log(res)
       if (res.data.code === 1) {
-        // this.setState({
-        //   src: res.data.data.headUrl,
-        // })
         this.props.states.changeUserInfo(this.state.data.userId);
       }
     }).catch(res => {
@@ -177,16 +188,21 @@ export default class Solution extends Component {
       isChangeImg: false,
     })
   }
-  getTime = (userTime) => {
-    let date = new Date(userTime);
-    let year = date.getFullYear();  // 获取完整的年份(4位,1970)
-    let month = (date.getMonth() < 10) ? `0${date.getMonth() + 1}` : date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
-    let day = date.getDate();  // 获取日(1-31)
-    let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
-    let hour = date.getHours();  // 获取小时数(0-23)
-    let minutes = date.getMinutes();  // 获取分钟数(0-59)
-    let second = date.getSeconds();  // 获取秒数(0-59)
-    return (`${year}-${month}-${day}`);
+
+  getBirth = (userTime) => {
+    if (userTime !== undefined && userTime !== null) {
+      let date = new Date(userTime);
+      let year = date.getFullYear();  // 获取完整的年份(4位,1970)
+      let month = (date.getMonth() < 10) ? `0${date.getMonth() + 1}` : date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
+      let day = (date.getDate() < 10) ? `0${date.getDate()}` : date.getDate(); // 获取日(1-31)
+      let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+      let hour = date.getHours();  // 获取小时数(0-23)
+      let minutes = date.getMinutes();  // 获取分钟数(0-59)
+      let second = date.getSeconds();  // 获取秒数(0-59)
+      return `${year}-${month}-${day}`;
+    } else {
+      return '2019-02-02';
+    }
   }
 
   noPicture = (isChangeImg, src) => {
@@ -215,8 +231,20 @@ export default class Solution extends Component {
       </div>
     )
   }
+  onPanelChange = (value, mode) => {
+    console.log('value', value);
+    console.log('mode', mode);
+    if (value !== null) {
+      this.setState({
+        data: {
+          ...this.state.data,
+          birthday: mode,
+        }
+      })
+    }
+  }
   render() {
-    if (this.state.data.name !== null) {
+    if (this.state.data.userId !== null) {
       return (
         <div className="solution">
           <ul>
@@ -240,13 +268,18 @@ export default class Solution extends Component {
               </RadioGroup>
             </li>
             <li>
-              <span>生日</span>
-              <input name="birth" className="text-solution" disabled={this.state.isDisabled} type="text" value={this.state.data.birth} onChange={this.onInputChange} />
+              <span >生日</span>
+              {/* {
+                this.state.birth !== null ? <DatePicker className="birthday" onChange={this.onPanelChange} disabled={this.state.isDisabled} defaultValue={moment(this.getBirth(this.state.birth), dateFormat)} /> : ""
+              } */}
+
+              <DatePicker className="birthday" onChange={this.onPanelChange} disabled={this.state.isDisabled} defaultValue={moment(this.getBirth(this.state.birth), dateFormat)} />
+
             </li>
-            <li>
+            {/* <li>
               <span>邮箱</span>
               <input name="email" className="text-solution" disabled={this.state.isDisabled} type="text" value={this.state.data.email} onChange={this.onInputChange} />
-            </li>
+            </li> */}
             <li>
               <span>个人简介</span>
               <input name="selfintro" className="text-solution" disabled={this.state.isDisabled} type="text" value={this.state.data.selfintro} onChange={this.onInputChange} />

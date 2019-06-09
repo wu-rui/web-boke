@@ -19,6 +19,7 @@ export default class MyArticle extends Component {
       articleStatus: this.props.type,
       user: this.props.user,
       delete: (id) => this.deleteArticle(id),
+      sendArticle: (id) => this.sendArticles(id)
     }
   }
   componentDidMount() {
@@ -43,7 +44,6 @@ export default class MyArticle extends Component {
   }
 
   deleteArticle = (id) => {
-
     axios.delete(`http://47.97.125.71:8080/article/${id}`).then(res => {
       console.log(res)
       if (res.data.code === 1) {
@@ -55,6 +55,22 @@ export default class MyArticle extends Component {
       }
     }).catch(res => {
       console.log(res)
+    })
+  }
+
+  sendArticles = (id) => {
+    axios.get(`http://47.97.125.71:8080/article/publish/${id}`).then(res => {
+      console.log(res)
+      if (res.data.code === 1) {
+        // confirm({
+        //   // title: '发布成功',
+        //   content: '发布成功',
+        // });
+        alert('发布成功')
+        this.getArticles();
+      }
+    }).catch(res => {
+      console.log(res.data.msg)
     })
   }
 

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Menu, Icon, Input, Dropdown } from 'antd';
+import { Menu, Icon, Input, Dropdown, Avatar } from 'antd';
 import './headNav.less';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../context';
+const Search = Input.Search;
 
 export default class HeadNav extends Component {
 	constructor(props) {
@@ -41,14 +42,28 @@ export default class HeadNav extends Component {
 
 	showUser = (result) => {
 		if (result.isLogin) {
-			
 			// this.getOutLog(result);
 			return (
 				<Dropdown overlay={this.menu(result)}>
 					<a className="ant-dropdown-link" href="#">
-						<img src={result.src} alt="头像" /><Icon type="down" />
+						{
+							this.showAvatar(result.src)
+							// result.src.length === 0 ? <Avatar size={32} icon="user" /> : <img src={result.src} alt="头像" />
+						}
+						<Icon type="down" />
 					</a>
 				</Dropdown>
+			)
+		}
+	}
+	showAvatar = (src) => {
+		if (src !== '' && src !== null && src !== undefined) {
+			return (
+				<img src={src} alt="头像" />
+			)
+		} else {
+			return (
+				<Avatar style={{ margin: 5 }} size={40} icon="user" />
 			)
 		}
 	}
@@ -63,6 +78,10 @@ export default class HeadNav extends Component {
 								{/* <Icon type="disconnect" className="nav-logo" /> */}
 								<img style={{ width: 30, marginBottom: 2, marginRight: 5 }} src="/image/logo.jpg" alt="小博客图标" />
 								<label className="nav-title">小博客</label>
+								<Search
+									placeholder="请输入需要搜索的文章标题"
+									onSearch={value => console.log(value)}
+								/>
 							</div>
 							<div className="wrap nav-list-wrap">
 								<Menu

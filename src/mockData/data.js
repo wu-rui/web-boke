@@ -159,4 +159,22 @@ const letter = [
   }
 ]
 
-export { articles, letter };
+const content = `<p><span style="font-weight: bold;">演员的演技有多野，去掉特效你就知道。</span></p>
+        <p><span style="font-size: xx-large;">再丑的毛绒道具，在一名成熟的演员的手上都能完成一段忘却自我的无实物表演。</span></p>
+        <p><span style="text-decoration-line: underline;">你充满爱意的望着躺着腿上的它，它即温柔又凶狠。当然了，凶狠是对别人的，而温柔只属于你。</span></p>
+        <div>
+          <div>
+            <p><span style="background-color: rgb(194, 79, 74);">在前后端完全分离的情况下，Vue项目中实现token验证大致思路如下：</span></p>
+            <p>1、第一次登录的时候，前端调后端的登陆接口，发送用户名和密码<br> 2、后端收到请求，验证用户名和密码，验证成功，就给前端返回一个token
+          <br><span style="font-style: italic;">
+                3、前端拿到token，将token存储到localStorage和vuex中，并跳转路由页面<br>
+                4、前端每次跳转路由，就判断 localStroage 中有无 token ，没有就跳转到登录页面，有则跳转到对应路由页面<br>
+                5、每次调后端接口，都要在请求头中加token<br>
+                6、后端判断请求头中有无token，有token，就拿到token并验证token，验证成功就返回数据，验证失败（例如：token过期）就返回401，请求头中没有token也返回401<br>
+                7、如果前端拿到状态码为401，就清除token信息并跳转到登录页面
+          </span>
+        </p>
+      </div><br><br>作者：world_7735
+      <br>链接：https://www.jianshu.com/p/5727f91b56c1<br>来源：简书<br>简书著作权归作者所有，任何形式的转载都请联系作者获得授权并注明出处。</div>
+  </div>`;
+export { articles, letter, content };

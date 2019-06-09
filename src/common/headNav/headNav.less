@@ -32,19 +32,18 @@
       margin-top: 10px;
       color: aliceblue;
       font-size: 30px;
-      .ant-input {
-        background-color: #444;
-        border: 1px solid #fff;
-        color: #d9d9d9;
-        .ant-input-search-icon {
-          color: #fff !important;
-        }
-        &:hover,&:focus{
-          border: 1px solid #fff;
-          box-shadow: none;
-          // 这里是去掉input的hover和focus的边框样式
-        }
-      } 
+        .ant-input-search {
+          width: 225px;
+          position: absolute;
+          top: 20px;
+          .ant-input {
+            &:hover,&:focus{
+              outline: none;
+              border: none;
+              box-shadow: none;
+            }
+          }
+        } 
     }
     .nav-list-wrap {
       position: relative;
