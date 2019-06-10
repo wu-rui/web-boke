@@ -12,18 +12,20 @@ export default class ArticleList extends Component {
       total: this.props.page.total ? this.props.page.total : 1,
       list: this.props.data,
       type: this.props.type,
-      userId: this.props.id,
+      // userId: this.props.page.user.userPO.id,
     }
+    debugger
   }
 
   componentWillReceiveProps(nextprops) {
     if (nextprops.data) {
+      debugger
       this.setState({
         current: nextprops.page.currentPage,
         total: nextprops.data.data.total,
         list: nextprops.data,
         type: nextprops.type,
-        userId: nextprops.id,
+        userId: nextprops.id || nextprops.page.user.userPO.id
       })
     }
 
@@ -31,9 +33,9 @@ export default class ArticleList extends Component {
 
   // 删除功能，需要完善修改密码，修改个人信息，头像显示，和注册
   // 这里type为1 ，是首页的样式，为2是个人中心的已发布，为3是个人中心的草稿箱
-  mapArticleList = (list, type) => {
-    let id = this.state.userId;
-    if (list !== undefined && list !== null && list.data.total > 0) {
+  mapArticleList = (list, type, userId) => {
+    // let id = this.state.userId;
+    if (list !== undefined && list !== null && list.data.total > 0 && userId) {
       return list.data.data.map((item) => {
         if (type === 1 || type === 2) {
           return (
@@ -43,7 +45,7 @@ export default class ArticleList extends Component {
                   {/* <a href={`http://47.97.125.71:8080/article/detail/${item.id}`} target="_blank">
                     {item.title}
                   </a> */}
-                  <Link target="_blank" to={`/article?id=${item.id}&userId=${id}&type=1`}>{item.title}</Link>
+                  <Link target="_blank" to={`/article?id=${item.id}&userId=${userId}&type=1`}>{item.title}</Link>
                 </p>
                 {
                   type === 2 ? '' : <span className="info-content user-hover"><Avatar icon="user" src={item.headUrl} />{item.username}</span>
@@ -58,6 +60,7 @@ export default class ArticleList extends Component {
             </li>
           )
         } else {
+          debugger
           return (
             <li className="info-li" key={item.id}>
               <div className="info-li-info">
@@ -65,11 +68,11 @@ export default class ArticleList extends Component {
                   {/* <a href={`http://47.97.125.71:8080/article/detail/${item.id}`} target="_blank">
                     {item.title}
                   </a> */}
-                  <Link target="_blank" to={`/article?id=${item.id}&userId=${id}&type=2`}>{item.title}</Link>
+                  <Link target="_blank" to={`/article?id=${item.id}&userId=${userId}&type=2`}>{item.title}</Link>
                 </p>
                 <p className="drafts">
                   <span >状态：未发布    </span>
-                  <Button>继续编辑</Button>
+                  <Button><Link to={`/write?id=${item.id}&userId=${userId}`}>继续编辑</Link></Button>
                   <Button onClick={() => this.props.page.sendArticle(item.id)}>直接发布</Button>
                   <Button onClick={() => this.props.page.delete(item.id)} >删除</Button>
                 </p>
@@ -89,10 +92,6 @@ export default class ArticleList extends Component {
     }
   }
 
-  sendNoContent = () => {
-
-  }
-
   getTime = (create_time) => {
     let date = new Date(create_time);
     let year = date.getFullYear();  // 获取完整的年份(4位,1970)
@@ -109,10 +108,10 @@ export default class ArticleList extends Component {
       <div className="list-info">
         <ul className="info-ul">
           {
-            this.mapArticleList(this.state.list, this.state.type)
+            this.mapArticleList(this.state.list, this.state.type, this.state.userId)
           }
         </ul>
-        <Pagination hideOnSinglePage current={this.state.current} onChange={this.props.page.changePages} total={this.state.total} pageSize={20} />
+        <Pagination hideOnSinglePage current={this.state.current} onChange={() => this.props.page.changePages} total={this.state.total} pageSize={20} />
       </div>
     )
   }

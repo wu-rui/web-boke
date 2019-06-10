@@ -7,6 +7,7 @@
     "babel-plugin-import": "^1.11.0",
     "bootstrap": "^3.3.7",
     "customize-cra": "^0.2.12",
+    "highlight.js": "^9.15.8",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "react": "^16.8.6",

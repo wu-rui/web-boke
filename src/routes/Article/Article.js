@@ -3,12 +3,13 @@ import { withRouter, Link } from 'react-router-dom';
 import { Modal, Button, Input } from 'antd';
 import connection from '../../server';
 import E from 'wangeditor'
-import './article.less'
+import './article.less';
 
 class Article extends Component {
   constructor(props, context) {
     super(props, context);
     console.log('这个context', context)
+    debugger
     this.state = {
       editorContent: null,
       sortId: null,
@@ -20,10 +21,26 @@ class Article extends Component {
       title: null,
       result: null,
       isSubmit: false,
+      articles: null,
+      detail: null,
+      articleId: null,
     }
   }
   componentDidMount() {
-    const editor = new E(this.editorElemTop, this.editorElemContnet)
+    let id = this.getId();
+    if (id) {
+      this.setState({
+        articleId: id,
+      })
+      this.getArticles(id);
+      this.getArticlesContent(id);
+    } else {
+      this.showEditor();
+    }
+  }
+
+  showEditor = () => {
+    const editor = new E(this.editorElemTop, this.editorElemContnet);
     editor.customConfig.uploadImgServer = 'http://47.97.125.71:8080/upload';
     editor.customConfig.showLinkImg = false;
     editor.customConfig.uploadFileName = 'file';
@@ -52,6 +69,67 @@ class Article extends Component {
     }
     editor.customConfig.debug = window.location.href.indexOf('wangeditor_debug_mode=1') > 0
     editor.create();
+    // 这个是判断有没有内容的
+    // if (id && this.state.detail) {
+    //   editor.txt.html(this.state.detail)
+    // }
+    this.addConent(editor)
+  }
+
+  addConent = (editor) => {
+    if (this.state.detail) {
+      editor.txt.html(this.state.detail)
+    }
+  }
+  async getArticles(articleId) {
+    const param = {
+      data: null,
+      path: `/article/info/${articleId}`,
+      method: 2,
+    }
+    let articles = await connection(param)
+    if (articles.status === 200) {
+      this.setState({
+        articles: articles.data.article_info,
+        sortId: articles.data.article_info.categoryId,
+        title: articles.data.article_info.title,
+      })
+    }
+  }
+  async getArticlesContent(articleId) {
+    const param = {
+      data: null,
+      path: `/article/detail/${articleId}`,
+      method: 2,
+    }
+    let detail = await connection(param)
+    if (detail.data.length > 0) {
+      this.setState({
+        detail: detail.data,
+      }, () => {
+        console.log('detail', this.state.detail)
+        this.showEditor(articleId)
+      })
+    }
+
+  }
+
+  getId = () => {
+    let search = window.location.search;
+    if (search.length > 0) {
+      let articleId = search.split('&')[0].split('=')[1];
+      let userId = search.split('&')[1].split('=')[1];
+      this.setState({
+        userId: userId,
+      }, () => {
+        if (userId !== '' && userId !== null && userId !== undefined) {
+          this.getUserResult()
+        }
+      })
+      return articleId;
+    } else {
+      return null;
+    }
   }
 
   bedeckImgUrl = (url) => {
@@ -101,19 +179,32 @@ class Article extends Component {
       }
     })
   }
+  // 685999121845970
 
   // 点击保存，直接发布
   clickSave = (e) => {
     let res = (e.target.id === 'save') ? 1 : 2;
+    let articleId = this.state.articleId;
     let result = true;
-    let data = {
-      title: this.state.title,
-      userId: this.props.userMsg.userPO.id,
-      categoryId: this.state.sortId,
-      articleStatus: res,
-      content: this.state.editorContent
+    let data = {};
+    if (articleId !== null && articleId !== undefined) {
+      data = {
+        id: articleId,
+        title: this.state.title,
+        userId: this.props.userMsg.userPO.id,
+        categoryId: this.state.sortId,
+        articleStatus: res,
+        content: this.state.editorContent
+      }
+    } else {
+      data = {
+        title: this.state.title,
+        userId: this.props.userMsg.userPO.id,
+        categoryId: this.state.sortId,
+        articleStatus: res,
+        content: this.state.editorContent
+      }
     }
-    alert(data.content)
     for (var i in data) {
       if (result && (data[i] === null || data[i] === undefined || data[i] === '')) {
         result = false;
@@ -141,14 +232,8 @@ class Article extends Component {
     }
   }
 
-
-  // 点击直接发布
-  clickSubmit = () => {
-    alert(this.state.editorContent)
-  }
-
   // 遍历显示用户的分类
-  mapArticelSort = (menuList) => {
+  mapArticelSort = (menuList, sortId) => {
     if (menuList !== undefined && menuList !== null) {
       if (menuList.data.data.length > 0) {
         return (
@@ -159,9 +244,15 @@ class Article extends Component {
             <ul className="ul-sort-name">
               {
                 menuList.data.data.map((item) => {
-                  return (
-                    <li key={item.id} value={item.id} onClick={this.selectSort}>{item.name}</li>
-                  )
+                  if (item.id === sortId) {
+                    return (
+                      <li key={item.id} value={item.id} className="sort-name" onClick={this.selectSort}>{item.name}</li>
+                    )
+                  } else {
+                    return (
+                      <li key={item.id} value={item.id} onClick={this.selectSort}>{item.name}</li>
+                    )
+                  }
                 })
               }
             </ul>
@@ -253,7 +344,7 @@ class Article extends Component {
         <Button type="primary" onClick={this.clickSave} className="submit" id="submit">直接发布</Button>
         <div className="write-sort">
           {
-            this.mapArticelSort(this.state.menuList)
+            this.mapArticelSort(this.state.menuList, this.state.sortId)
           }
           <Modal
             title="Title"
@@ -268,7 +359,7 @@ class Article extends Component {
         {/* 将生成编辑器 */}
         <div className="write-editor">
           {/* <div> */}
-          <input placeholder="无标题文章" className="write-title" onChange={this.onTitleChange} />
+          <input placeholder="无标题文章" className="write-title" value={this.state.title} onChange={this.onTitleChange} />
           {/* </div> */}
           <div ref={el => this.editorElemTop = el} style={{ textAlign: 'left' }} className="editor-top" />
           <div ref={el => this.editorElemContnet = el} style={{ textAlign: 'left' }} className="editor-content" />

@@ -44,6 +44,19 @@ export default class MyArticle extends Component {
   }
 
   deleteArticle = (id) => {
+    confirm({
+      title: '确定删除?',
+      cancelText: '取消',
+      okText: '确认',
+      onOk: () => {
+        this.trueDelete(id);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+  }
+  trueDelete = (id) => {
     axios.delete(`http://47.97.125.71:8080/article/${id}`).then(res => {
       console.log(res)
       if (res.data.code === 1) {
@@ -59,13 +72,25 @@ export default class MyArticle extends Component {
   }
 
   sendArticles = (id) => {
+    confirm({
+      title: '确定发布?',
+      content: '发布成功后，该文章将在首页进行展示',
+      cancelText: '取消',
+      okText: '确认',
+      onOk: () => {
+        this.trueSendArticle(id);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
+
+  }
+
+  trueSendArticle = (id) => {
     axios.get(`http://47.97.125.71:8080/article/publish/${id}`).then(res => {
       console.log(res)
       if (res.data.code === 1) {
-        // confirm({
-        //   // title: '发布成功',
-        //   content: '发布成功',
-        // });
         alert('发布成功')
         this.getArticles();
       }

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 // import { content } from "../../mockData/data";
+import hljs from 'highlight.js';
 import connection from '../../server';
 import { Avatar, Input, Button } from 'antd';
 import './showArticle.less';
+import 'highlight.js/styles/github.css';
 const { TextArea } = Input;
 
 
@@ -21,7 +23,9 @@ export default class ArticleDetail extends Component {
   }
 
   componentDidMount() {
-    this.getIds()
+    this.getIds();
+    // hljs.initHighlighting()();
+
   }
 
   getIds = () => {
@@ -51,6 +55,7 @@ export default class ArticleDetail extends Component {
     this.setState({
       articles: await connection(param),
     })
+    debugger
   }
   async getArticlesContent(articleId) {
     const param = {
