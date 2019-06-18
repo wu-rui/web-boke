@@ -10,7 +10,6 @@ export default class RouterWrap extends Component {
             <div id="router">
                 <Router>
                     <Switch>
-                        {/* <Route path="/login" component={LoginUser} /> */}
                         <Route path="/write" component={WritePage} />
                         <Route path="/" component={DefaultLayout} />
                     </Switch>

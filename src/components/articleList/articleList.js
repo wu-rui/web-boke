@@ -14,12 +14,10 @@ export default class ArticleList extends Component {
       type: this.props.type,
       // userId: this.props.page.user.userPO.id,
     }
-    debugger
   }
 
   componentWillReceiveProps(nextprops) {
     if (nextprops.data) {
-      debugger
       this.setState({
         current: nextprops.page.currentPage,
         total: nextprops.data.data.total,
@@ -60,7 +58,6 @@ export default class ArticleList extends Component {
             </li>
           )
         } else {
-          debugger
           return (
             <li className="info-li" key={item.id}>
               <div className="info-li-info">
@@ -97,10 +94,10 @@ export default class ArticleList extends Component {
     let year = date.getFullYear();  // 获取完整的年份(4位,1970)
     let month = (date.getMonth() < 10) ? `0${date.getMonth() + 1}` : date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
     let day = (date.getDate() < 10) ? `0${date.getDate()}` : date.getDate(); // 获取日(1-31)
-    let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
-    let hour = date.getHours();  // 获取小时数(0-23)
-    let minutes = date.getMinutes();  // 获取分钟数(0-59)
-    let second = date.getSeconds();  // 获取秒数(0-59)
+    // let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+    // let hour = date.getHours();  // 获取小时数(0-23)
+    // let minutes = date.getMinutes();  // 获取分钟数(0-59)
+    // let second = date.getSeconds();  // 获取秒数(0-59)
     return (`${year}-${month}-${day}`);
   }
   render() {

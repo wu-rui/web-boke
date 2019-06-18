@@ -12,7 +12,6 @@ const dateFormat = 'YYYY/MM/DD';
 export default class Solution extends Component {
   constructor(props) {
     super(props);
-    console.log('Props1', this.props)
     this.state = {
       value: 1,
       isDisabled: true,
@@ -33,7 +32,6 @@ export default class Solution extends Component {
     };
   }
   componentDidMount() {
-    console.log('Props2', this.props)
     this.getUserInfo(this.props.states)
   }
 
@@ -172,7 +170,6 @@ export default class Solution extends Component {
       }
     }
     axios.post(`http://47.97.125.71:8080/users/head/${this.state.data.userId}`, fd, config).then(res => {
-      console.log(res)
       if (res.data.code === 1) {
         this.props.states.changeUserInfo(this.state.data.userId);
       }
@@ -195,10 +192,10 @@ export default class Solution extends Component {
       let year = date.getFullYear();  // 获取完整的年份(4位,1970)
       let month = (date.getMonth() < 10) ? `0${date.getMonth() + 1}` : date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
       let day = (date.getDate() < 10) ? `0${date.getDate()}` : date.getDate(); // 获取日(1-31)
-      let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
-      let hour = date.getHours();  // 获取小时数(0-23)
-      let minutes = date.getMinutes();  // 获取分钟数(0-59)
-      let second = date.getSeconds();  // 获取秒数(0-59)
+      // let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+      // let hour = date.getHours();  // 获取小时数(0-23)
+      // let minutes = date.getMinutes();  // 获取分钟数(0-59)
+      // let second = date.getSeconds();  // 获取秒数(0-59)
       return `${year}-${month}-${day}`;
     } else {
       return '2019-02-02';
@@ -232,8 +229,6 @@ export default class Solution extends Component {
     )
   }
   onPanelChange = (value, mode) => {
-    console.log('value', value);
-    console.log('mode', mode);
     if (value !== null) {
       this.setState({
         data: {

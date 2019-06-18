@@ -2,15 +2,11 @@ import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import LeftMenu from '../../common/leftMenu/leftMenu'
 import Like from './component/myLike';
-// import Setting from './component/mySetting';
-// import Remark from './component/remark';
 import Solution from './component/solution';
 import MyArticle from './component/myArticle';
-// import articles from '../../mockData/data';
 import { UserContext } from '../../context';
 import { Breadcrumb, Icon } from 'antd';
 import './center.less'
-// const confirm = Modal.confirm;
 
 const list = [
   {
@@ -98,7 +94,7 @@ export default class Center extends Component {
     return (
       <UserContext.Consumer>
         {(states) => {
-          if (states.isOutLog) {
+          if (states.isLogin) {
             return (
               <div id="center-content">
                 <Breadcrumb>
@@ -122,4 +118,33 @@ export default class Center extends Component {
       </UserContext.Consumer>
     )
   }
+
+  // render() {
+  //   return (
+  //     <UserContext.Consumer>
+  //       {(states) => {
+  //         if (states.isOutLog) {
+  //           return (
+  //             <div id="center-content">
+  //               <Breadcrumb>
+  //                 <Breadcrumb.Item ><Icon type="home" /></Breadcrumb.Item>
+  //                 <Breadcrumb.Item ><Icon type="user" /><span>个人中心</span></Breadcrumb.Item>
+  //               </Breadcrumb>
+  //               <div className="left-menu">
+  //                 <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
+  //               </div>
+  //               <div className="center-user">
+  //                 {
+  //                   this.setMenuContent(this.state.menuId, states)
+  //                 }
+  //               </div>
+  //             </div>
+  //           )
+  //         } else {
+  //           return (<Redirect to="/login" />)
+  //         }
+  //       }}
+  //     </UserContext.Consumer>
+  //   )
+  // }
 }

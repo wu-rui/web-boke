@@ -20,7 +20,6 @@ export default class HeadNav extends Component {
 		return (
 			<Menu onClick={({ key }) => { this.menuOnClick(result, key) }}>
 				<Menu.Item key="1"><Link to="/center" target="_blank">个人中心</Link></Menu.Item>
-				{/* <Menu.Item key="1"><Link to="/center">个人中心</Link></Menu.Item> */}
 				<Menu.Item key="2">退出登录</Menu.Item>
 			</Menu>
 		)
@@ -28,17 +27,14 @@ export default class HeadNav extends Component {
 
 	// 点击下拉框菜单事件
 	menuOnClick = (res, key) => {
-		console.log(res)
 		if (key === '2') {
-			console.log('key', { key });
 			res.outlog(key);
 		}
-		console.log('key', { key });
 	}
 
-	handleClick = (e) => { //点击事件
-		this.setState({ current: e.key });
-	}
+	// handleClick = (e) => { //点击事件
+	// 	this.setState({ current: e.key });
+	// }
 
 	showUser = (result) => {
 		if (result.isLogin) {
@@ -87,7 +83,7 @@ export default class HeadNav extends Component {
 								<Menu
 									selectedKeys={[this.state.current]}
 									mode="horizontal"
-									onClick={this.handleClick}
+								// onClick={this.handleClick}
 								>
 									<Menu.Item key="home">
 										<Link to="/">发现</Link>

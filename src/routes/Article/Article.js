@@ -8,8 +8,6 @@ import './article.less';
 class Article extends Component {
   constructor(props, context) {
     super(props, context);
-    console.log('这个context', context)
-    debugger
     this.state = {
       editorContent: null,
       sortId: null,
@@ -107,7 +105,6 @@ class Article extends Component {
       this.setState({
         detail: detail.data,
       }, () => {
-        console.log('detail', this.state.detail)
         this.showEditor(articleId)
       })
     }

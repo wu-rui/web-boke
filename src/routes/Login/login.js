@@ -99,11 +99,6 @@ export default class Login extends Component {
     }
   }
 
-  // 当点击注册按钮
-  // getEnroll = () => {
-  //   alert(`注册名字：${this.state.enrollName},注册密码：${this.state.enrollPsw}`)
-  // }
-
   // 当切换登录方式
   inEnroll = (check) => {
     this.setState({

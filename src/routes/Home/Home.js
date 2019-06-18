@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-// import HotList from '../../components/hotList/hotList';
-// import { letter } from '../../mockData/data';
 import ArticleList from '../../components/articleList/articleList';
-// import ControlledCarous from '../../components/carousel/carousel';
 import { UserContext } from '../../context';
 import connection from '../../server';
 import Opinion from '../../components/opinions/opinions';
 import OpinionList from '../../components/opinionList/opinionList';
 import { Input, Modal } from 'antd';
 import './home.less'
-const Search = Input.Search;
 const confirm = Modal.confirm;
 
 // 现在需要做，留言功能，点赞功能，修改密码功能，还有删除功能

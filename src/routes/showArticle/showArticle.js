@@ -33,7 +33,6 @@ export default class ArticleDetail extends Component {
     let articleId = search.split('&')[0].split('=')[1];
     let userId = search.split('&')[1].split('=')[1];
     let type = search.split('&')[2].split('=')[1];
-    debugger
     this.setState({
       userId: userId,
       articleId: articleId,
@@ -55,7 +54,6 @@ export default class ArticleDetail extends Component {
     this.setState({
       articles: await connection(param),
     })
-    debugger
   }
   async getArticlesContent(articleId) {
     const param = {
@@ -75,8 +73,6 @@ export default class ArticleDetail extends Component {
     }
     this.setState({
       comment: await connection(param),
-    }, () => {
-      console.log('comment', this.state.comment)
     })
   }
 
@@ -99,7 +95,6 @@ export default class ArticleDetail extends Component {
   }
 
   showContent = (content) => {
-    console.log('content', content)
     if (content !== null && content !== undefined) {
       return (
         <div className="article-content" dangerouslySetInnerHTML={{ __html: content.data }} ></div>
@@ -108,7 +103,6 @@ export default class ArticleDetail extends Component {
   }
 
   getArticleInfo = (info, type) => {
-    console.log('info', info)
     if (info !== null && info !== undefined) {
       let data = info.data.article_info;
       let count = info.data;
@@ -154,10 +148,10 @@ export default class ArticleDetail extends Component {
     let year = date.getFullYear();  // 获取完整的年份(4位,1970)
     let month = (date.getMonth() < 10) ? `0${date.getMonth() + 1}` : date.getMonth();  // 获取月份(0-11,0代表1月,用的时候记得加上1)
     let day = (date.getDate() < 10) ? `0${date.getDate()}` : date.getDate(); // 获取日(1-31)
-    let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
-    let hour = date.getHours();  // 获取小时数(0-23)
-    let minutes = date.getMinutes();  // 获取分钟数(0-59)
-    let second = date.getSeconds();  // 获取秒数(0-59)
+    // let time = date.getTime();  // 获取时间(从1970.1.1开始的毫秒数)
+    // let hour = date.getHours();  // 获取小时数(0-23)
+    // let minutes = date.getMinutes();  // 获取分钟数(0-59)
+    // let second = date.getSeconds();  // 获取秒数(0-59)
     return (`${year}-${month}-${day}`);
   }
 
@@ -208,7 +202,6 @@ export default class ArticleDetail extends Component {
   }
 
   textOnChange = (e) => {
-    console.log('textArea', e.target.value)
     this.setState({
       textValue: e.target.value
     })

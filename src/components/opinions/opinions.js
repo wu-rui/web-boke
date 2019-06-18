@@ -12,7 +12,6 @@ export default class Opinions extends Component {
     }
   }
   textOnChange = (e) => {
-    console.log('textArea', e.target.value)
     this.setState({
       value: e.target.value
     })

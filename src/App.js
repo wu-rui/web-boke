@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { UserContext } from './context';
-import { Redirect } from 'react-router';
-// import RouterWrap from './router';
 import connection from './server';
 import { Modal } from 'antd';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
@@ -25,9 +23,9 @@ class App extends Component {
       outlog: this.logOut,
       updatePsw: (res) => this.onClickUpdate(res),
       changeUserInfo: (id) => this.getUserInfo(id),
-      // sendLetter: (value) => this.sendLetters(value)
     }
   }
+
   componentDidMount() {
     this.getLocalStorageUserMsg();
   }
@@ -61,15 +59,12 @@ class App extends Component {
         cancelText: '取消',
         okText: '确认',
         onOk: () => {
-          console.log('OK');
           this.outLogin();
         },
         onCancel() {
           console.log('Cancel');
         },
       });
-    } else if (key === '0') {
-
     }
   }
 
@@ -151,10 +146,12 @@ class App extends Component {
       method: 2
     }
     JSON.stringify(await connection(param))
-    localStorage.removeItem('user_msg');
+    // localStorage.removeItem('user_msg');
     this.setState({
       isLogin: false,
       isOutLog: false,
+    }, () => {
+      localStorage.removeItem('user_msg');
     })
   }
 

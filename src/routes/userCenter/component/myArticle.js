@@ -58,7 +58,6 @@ export default class MyArticle extends Component {
   }
   trueDelete = (id) => {
     axios.delete(`http://47.97.125.71:8080/article/${id}`).then(res => {
-      console.log(res)
       if (res.data.code === 1) {
         confirm({
           title: '删除成功',
@@ -89,7 +88,6 @@ export default class MyArticle extends Component {
 
   trueSendArticle = (id) => {
     axios.get(`http://47.97.125.71:8080/article/publish/${id}`).then(res => {
-      console.log(res)
       if (res.data.code === 1) {
         alert('发布成功')
         this.getArticles();
