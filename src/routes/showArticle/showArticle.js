@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 // import { content } from "../../mockData/data";
-import hljs from 'highlight.js';
+// import hljs from 'highlight.js';
 import connection from '../../server';
 import { Avatar, Input, Button } from 'antd';
 import './showArticle.less';

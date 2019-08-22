@@ -19,7 +19,7 @@ export default class HeadNav extends Component {
 	menu = (result) => {
 		return (
 			<Menu onClick={({ key }) => { this.menuOnClick(result, key) }}>
-				<Menu.Item key="1"><Link to="/center" target="_blank">个人中心</Link></Menu.Item>
+				<Menu.Item key="1"><Link to="/center">个人中心</Link></Menu.Item>
 				<Menu.Item key="2">退出登录</Menu.Item>
 			</Menu>
 		)

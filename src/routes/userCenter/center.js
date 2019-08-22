@@ -83,7 +83,6 @@ export default class Center extends Component {
         case 4: return (
           <Like update={this.state.updatePsw} user={states.context} updatePsw={states.updatePsw} />
         );
-
         default:
           break;
       }
@@ -118,33 +117,4 @@ export default class Center extends Component {
       </UserContext.Consumer>
     )
   }
-
-  // render() {
-  //   return (
-  //     <UserContext.Consumer>
-  //       {(states) => {
-  //         if (states.isOutLog) {
-  //           return (
-  //             <div id="center-content">
-  //               <Breadcrumb>
-  //                 <Breadcrumb.Item ><Icon type="home" /></Breadcrumb.Item>
-  //                 <Breadcrumb.Item ><Icon type="user" /><span>个人中心</span></Breadcrumb.Item>
-  //               </Breadcrumb>
-  //               <div className="left-menu">
-  //                 <LeftMenu data={list} selectNode={this.selectMenu} selectId={this.state.menuId} />
-  //               </div>
-  //               <div className="center-user">
-  //                 {
-  //                   this.setMenuContent(this.state.menuId, states)
-  //                 }
-  //               </div>
-  //             </div>
-  //           )
-  //         } else {
-  //           return (<Redirect to="/login" />)
-  //         }
-  //       }}
-  //     </UserContext.Consumer>
-  //   )
-  // }
 }

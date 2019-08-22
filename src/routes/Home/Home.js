@@ -5,7 +5,7 @@ import { UserContext } from '../../context';
 import connection from '../../server';
 import Opinion from '../../components/opinions/opinions';
 import OpinionList from '../../components/opinionList/opinionList';
-import { Input, Modal } from 'antd';
+import { Modal } from 'antd';
 import './home.less'
 const confirm = Modal.confirm;
 
@@ -14,7 +14,7 @@ const confirm = Modal.confirm;
 
 export default class Home extends Component {
   constructor(props) {
-    super(props);
+    super(props);//Compnent.call(props)
     this.state = {
       articles: null,
       opinions: null,
