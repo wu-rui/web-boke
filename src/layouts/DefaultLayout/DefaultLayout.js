@@ -5,6 +5,8 @@ import Footer from '../../common/footer/footer';
 import Home from '../../routes/Home/Home';
 import center from '../../routes/userCenter/center';
 import article from '../../routes/showArticle/showArticle';
+import Snake from '../../routes/Snake/snake';
+
 // import { UserContext } from '../../context';
 
 
@@ -19,6 +21,7 @@ export default class DefaultLayout extends Component {
           <Route path="/" component={Home} exact />
           <Route path="/center" component={center} />
           <Route path="/article" component={article} />
+          <Route path="/snake" component={Snake} />
         </div>
         <Footer />
       </div >

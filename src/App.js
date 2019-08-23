@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import DefaultLayout from '../src/layouts/DefaultLayout/DefaultLayout';
 import LoginUser from '../src/layouts/LoginUser/LoginUser';
 import WritePage from '../src/layouts/WritePage/WritePage';
+
 import './App.css';
 
 const confirm = Modal.confirm;
