@@ -1,0 +1,43 @@
+#swiper {
+  position: absolute;
+  overflow: hidden;
+  .swiper-imgs {
+  }
+  .imgs-buttons {
+    position: absolute;
+    left:0;
+    display: none;
+    z-index: 1;
+    .show-button{
+      font-size: 40px;
+      width: 40px;
+      height: 70px;
+      background-color: rgba(0, 0, 0, 0.5);
+      color: white;
+      line-height: 70px;
+      cursor: pointer;
+    }
+  }
+  .select-box {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 10px;
+    &:hover {
+      cursor: pointer;
+    }
+    .each-select{
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: white;
+      border: 1px solid black;
+      margin: 0 10px;
+    } 
+    .isselected {
+      background-color: black;
+    }
+  }
+}

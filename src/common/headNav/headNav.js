@@ -93,6 +93,9 @@ export default class HeadNav extends Component {
 									<Menu.Item key="snake">
 										<Link to="/snake" >贪吃蛇</Link>
 									</Menu.Item>
+									<Menu.Item key="todolist">
+										<Link to="/todolist" >记事本</Link>
+									</Menu.Item>
 									{this.showUser(result)}
 								</Menu>
 							</div>
