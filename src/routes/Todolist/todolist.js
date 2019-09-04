@@ -22,15 +22,18 @@ export default class Todolist extends Component {
     }
   }
 
+  // 关闭，刷新页面的时候保存数据
   saveState = (lists) => {
     window.localStorage.setItem('usertodostate', JSON.stringify(this.state.curListState))
     window.localStorage.setItem('userForTodo', JSON.stringify(lists))
   }
 
+  // 初始化数据
   componentDidMount() {
     this.loadList()
   }
 
+  // 初始化显示哪个状态下的数据
   showWitch = () => {
     let idx = this.state.curListState;
     this.chaneButtons(idx + 1)
@@ -40,6 +43,8 @@ export default class Todolist extends Component {
       this.getDone()
     }
   }
+
+  // 改变按钮状态
   chaneButtons = (idx) => {
     let node = document.querySelectorAll('.buttom-li span')
     if (node && node.length > 0 && idx) {
@@ -55,6 +60,7 @@ export default class Todolist extends Component {
     }
   }
 
+  // 初始化列表
   loadList = () => {
     let lists = JSON.parse(localStorage.getItem('userForTodo'))
     let states = JSON.parse(localStorage.getItem('usertodostate'))
@@ -76,6 +82,7 @@ export default class Todolist extends Component {
     }
   }
 
+  // 保存数据
   saveMsg = (e) => {
     if (e.keyCode === 13) {
       let msg = {
@@ -96,6 +103,7 @@ export default class Todolist extends Component {
     }
   }
 
+  // 删除列表项
   deleteTodo = (e) => {
     let lists = this.state.lists
     // 得到当前点击的下标 
@@ -120,6 +128,7 @@ export default class Todolist extends Component {
     })
   }
 
+  // 选择所有
   selectAll = (e) => {
     let lists = this.state.lists;
     let isAllSelect = this.state.isAllSelect;
@@ -134,6 +143,7 @@ export default class Todolist extends Component {
     })
   }
 
+  // 显示所有
   getAll = () => {
     let lists = this.state.originList.slice()
     this.chaneButtons(1)
@@ -146,6 +156,7 @@ export default class Todolist extends Component {
     })
   }
 
+  // 显示未完成
   getUnDone = () => {
     let lists = this.state.originList.slice()
     let unDoneList = lists.filter(it => it.isDone === false)
@@ -159,6 +170,7 @@ export default class Todolist extends Component {
     })
   }
 
+  // 显示已完成
   getDone = () => {
     let lists = this.state.originList.slice()
     let unDoneList = lists.filter(it => it.isDone === true)
@@ -172,6 +184,7 @@ export default class Todolist extends Component {
     })
   }
 
+  // 清除所有已经完成
   clearAllDone = (e) => {
     let lists = this.state.lists;
     let unDoneList = lists.filter(it => it.isDone === false)
@@ -184,11 +197,13 @@ export default class Todolist extends Component {
     })
   }
 
+  // 改变列表的数据，更新数据
   changeText = (e) => {
     let cur = e.target.disabled
     e.target.disabled = !cur;
   }
 
+  // 新增列表更新数据
   getValue = (e) => {
     let curValue = e.target.value;
     let idx = Number(e.target.parentNode.dataset.idx);
@@ -200,6 +215,7 @@ export default class Todolist extends Component {
     })
   }
 
+  // 添加todo列表
   addTodo = () => {
     return (
       <div >
@@ -218,6 +234,8 @@ export default class Todolist extends Component {
       </div>
     )
   }
+
+  // 添加按钮
   addButtons = () => {
     return (
       <li className="buttom-li">
@@ -229,6 +247,7 @@ export default class Todolist extends Component {
       </li>
     )
   }
+
   render() {
     let isAll = ''
     if (this.state.undone === 0 && this.state.originList.length > 0) {
