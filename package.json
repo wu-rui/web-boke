@@ -38,7 +38,7 @@
   ],
   "proxy": "http://47.97.125.71:8080",
   "devDependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "react-cropper": "^1.2.0"
   }
 }
