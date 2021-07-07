@@ -83,13 +83,18 @@ export default class HeadNav extends Component {
 								<Menu
 									selectedKeys={[this.state.current]}
 									mode="horizontal"
-								// onClick={this.handleClick}
 								>
 									<Menu.Item key="home">
 										<Link to="/">发现</Link>
 									</Menu.Item>
 									<Menu.Item key="writePage">
 										<Link to="/write" target="_blank">写文章</Link>
+									</Menu.Item>
+									<Menu.Item key="snake">
+										<Link to="/snake" >贪吃蛇</Link>
+									</Menu.Item>
+									<Menu.Item key="todolist">
+										<Link to="/todolist" >记事本</Link>
 									</Menu.Item>
 									{this.showUser(result)}
 								</Menu>
