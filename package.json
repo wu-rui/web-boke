@@ -5,7 +5,7 @@
   "dependencies": {
     "antd": "^3.16.2",
     "babel-plugin-import": "^1.11.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "customize-cra": "^0.2.12",
     "highlight.js": "^9.15.8",
     "less": "^3.9.0",
